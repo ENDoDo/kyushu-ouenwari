@@ -499,6 +499,12 @@
     return v == null || v === "" || v === "未公表" || v === "-" || v === "—";
   }
 
+  /* A value can be present and still not be a date you can book on:
+     "9月下旬", "調整中". Those count as undecided, same as the writer does. */
+  function isPending(v) {
+    return isUnset(v) || /上旬|中旬|下旬|未定|調整中|頃|ごろ|予定$/.test(String(v));
+  }
+
   /* Derive the row's state from the data, so the board never needs a
      separate status field the writer could forget to update. */
   function stateOf(p) {
@@ -506,7 +512,7 @@
     if (p.state && STATE_ORDER[p.state] != null) return p.state;
     var ota = p.OTA || p.ota || "";
     if (/受付中|販売中|開始/.test(ota)) return "live";
-    if (!isUnset(p["予約開始"])) return "fixed";
+    if (!isPending(p["予約開始"])) return "fixed";
     if (/可決/.test(p["議会"] || "")) return "budget";
     return "unknown";
   }
@@ -525,7 +531,7 @@
     return '<span class="' + cls + '">' + esc(txt) + "</span>" + mark;
   }
 
-  function renderBoard(prefs) {
+  function renderBoard(prefs, undecidedCount) {
     var rows = PREFS.map(function (name) {
       return { name: name, p: (prefs && prefs[name]) || null };
     });
@@ -540,10 +546,11 @@
       var st = stateOf(r.p);
       var rate = p["補助率"] || (r.name === "熊本" || r.name === "鹿児島" ? "60%" : "50%");
       var hi = /60/.test(rate) ? " hi" : "";
-      var dep = isUnset(p["予約開始"])
-        ? '<span class="depart pending">調整中</span>'
-        : '<span class="depart">' + esc(p["予約開始"]) + "</span>" +
-          (unofficial(p, "予約開始") ? '<span class="tag-unofficial">参考</span>' : "");
+      var pend = isPending(p["予約開始"]);
+      var dep = '<span class="depart' + (pend ? " pending" : "") + '">' +
+        esc(isUnset(p["予約開始"]) ? "調整中" : p["予約開始"]) + "</span>" +
+        (!isUnset(p["予約開始"]) && unofficial(p, "予約開始")
+          ? '<span class="tag-unofficial">参考</span>' : "");
 
       var src = "";
       if (p["出典"]) {
@@ -569,13 +576,14 @@
     }).join("");
 
     var undecided = rows.filter(function (r) {
-      return isUnset(r.p && r.p["予約開始"]);
+      return isPending(r.p && r.p["予約開始"]);
     });
+    var n = typeof undecidedCount === "number" ? undecidedCount : undecided.length;
 
     var gv = document.getElementById("g-undecided");
-    gv.innerHTML = esc(String(undecided.length)) + '<span class="unit">/ 7県</span>';
+    gv.innerHTML = esc(String(n)) + '<span class="unit">/ 7県</span>';
     document.getElementById("g-undecided-note").textContent =
-      undecided.length === 0
+      n === 0
         ? "全県確定。このウォッチは役目を終えました"
         : undecided.map(function (r) { return r.name; }).join("・");
   }
@@ -624,7 +632,7 @@
   }
 
   /* first frame: the board exists and is legible before any data arrives */
-  renderBoard(null);
+  renderBoard(null, undefined);
   renderCountdown();
   setInterval(renderCountdown, 60000);
 
@@ -635,7 +643,7 @@
       var res = await fetch(DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
       if (!res.ok) throw new Error("HTTP " + res.status);
       var d = await res.json();
-      renderBoard(d.prefs || null);
+      renderBoard(d.prefs || null, d.undecided_count);
       renderLog(d.history || []);
       if (d.updated_at) {
         document.getElementById("g-updated").textContent = fmt(d.updated_at);
