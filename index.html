@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="九州ふっこう応援割の各県の予約開始日・対象期間・県議会の補正予算・OTA販売状況を1日4回自動でウォッチして更新しています。">
+<title>九州ふっこう応援割 発車標</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground:      #E9EBE4;
+    --surface:     #FCFCFA;
+    --surface-alt: #F1F3EC;
+    --ink:         #191C18;
+    --muted:       #68705F;
+    --line:        #CDD2C4;
+    --line-soft:   #DFE3D8;
+    --accent:      #1B6B4C;
+    --accent-ink:  #FFFFFF;
+
+    --s-unknown:   #838B7A;
+    --s-budget:    #A87510;
+    --s-fixed:     #1B6B4C;
+    --s-live:      #BC3B26;
+
+    --s-unknown-bg: #E3E5DD;
+    --s-budget-bg:  #F6EBD2;
+    --s-fixed-bg:   #D9EBE1;
+    --s-live-bg:    #F7DFDA;
+
+    --display: "Oswald", "Zen Kaku Gothic New", sans-serif;
+    --body: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    --mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #141713;
+      --surface:     #1D211B;
+      --surface-alt: #232821;
+      --ink:         #E6E9E1;
+      --muted:       #949E8B;
+      --line:        #333A2F;
+      --line-soft:   #282E24;
+      --accent:      #58C994;
+      --accent-ink:  #0E1A13;
+
+      --s-unknown:   #9AA391;
+      --s-budget:    #E0A93B;
+      --s-fixed:     #58C994;
+      --s-live:      #F0705A;
+
+      --s-unknown-bg: #272C23;
+      --s-budget-bg:  #33290F;
+      --s-fixed-bg:   #122E22;
+      --s-live-bg:    #37201C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #141713;
+    --surface:     #1D211B;
+    --surface-alt: #232821;
+    --ink:         #E6E9E1;
+    --muted:       #949E8B;
+    --line:        #333A2F;
+    --line-soft:   #282E24;
+    --accent:      #58C994;
+    --accent-ink:  #0E1A13;
+
+    --s-unknown:   #9AA391;
+    --s-budget:    #E0A93B;
+    --s-fixed:     #58C994;
+    --s-live:      #F0705A;
+
+    --s-unknown-bg: #272C23;
+    --s-budget-bg:  #33290F;
+    --s-fixed-bg:   #122E22;
+    --s-live-bg:    #37201C;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 20px 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ---------- header ---------- */
+
+  header { display: flex; flex-direction: column; gap: 18px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    align-items: baseline;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(30px, 5.2vw, 46px);
+    line-height: 1.08;
+    letter-spacing: 0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .gauges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .gauge {
+    background: var(--surface);
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .gauge-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .gauge-value {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .gauge-value .unit {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .gauge-note { font-size: 12px; color: var(--muted); }
+
+  /* ---------- board ---------- */
+
+  .board-frame {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .board-scroll { overflow-x: auto; }
+
+  .board {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  .board thead th {
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 9px 14px;
+    white-space: nowrap;
+  }
+
+  .board tbody tr { border-bottom: 1px solid var(--line-soft); }
+  .board tbody tr:last-child { border-bottom: 0; }
+
+  .board td {
+    padding: 13px 14px;
+    vertical-align: top;
+  }
+
+  .pref {
+    font-family: var(--display);
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .rate {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1px 4px;
+    line-height: 1.5;
+  }
+
+  .rate.hi { color: var(--s-live); border-color: var(--s-live); }
+
+  .depart {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  .depart.pending { color: var(--muted); font-size: 15px; letter-spacing: 0.06em; }
+
+  .sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .pill::before {
+    content: "";
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+  }
+
+  .pill.unknown { color: var(--s-unknown); background: var(--s-unknown-bg); }
+  .pill.budget  { color: var(--s-budget);  background: var(--s-budget-bg); }
+  .pill.fixed   { color: var(--s-fixed);   background: var(--s-fixed-bg); }
+  .pill.live    { color: var(--s-live);    background: var(--s-live-bg); }
+
+  /* severity stripe on the row */
+  .board td:first-child { border-left: 3px solid transparent; }
+  tr[data-state="fixed"] td:first-child { border-left-color: var(--s-fixed); }
+  tr[data-state="live"]   td:first-child { border-left-color: var(--s-live); }
+  tr[data-state="budget"] td:first-child { border-left-color: var(--s-budget); }
+
+  .src a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-size: 12px;
+    word-break: break-all;
+  }
+  .src a:hover { border-bottom-color: var(--accent); }
+  a:focus-visible, .src a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .tag-unofficial {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    color: var(--s-budget);
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    padding: 0 3px;
+    margin-left: 5px;
+    white-space: nowrap;
+  }
+
+  /* ---------- log ---------- */
+
+  section h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 12px;
+  }
+
+  .log { display: flex; flex-direction: column; gap: 0; }
+
+  .log-row {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 4px 18px;
+    padding: 11px 0;
+    border-top: 1px solid var(--line-soft);
+    align-items: baseline;
+  }
+
+  .log-when {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .log-what { font-size: 13.5px; }
+  .log-what strong { font-weight: 700; }
+  .log-what .from { color: var(--muted); font-size: 12px; }
+
+  .empty {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  /* ---------- status strip ---------- */
+
+  .strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    padding-top: 4px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--s-unknown);
+    margin-right: 6px;
+    vertical-align: 1px;
+  }
+  .dot.ok { background: var(--s-fixed); }
+  .dot.warn { background: var(--s-budget); }
+
+  footer {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    border-top: 1px solid var(--line-soft);
+    padding-top: 16px;
+  }
+  footer a { color: var(--accent); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .gauge-value, .depart { transition: color 220ms ease; }
+  }
+
+  @media (max-width: 560px) {
+    .log-row { grid-template-columns: 1fr; gap: 2px; }
+    .wrap { padding: 24px 14px 56px; }
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">
+      <span>令和8年熊本地震 観光需要回復策</span>
+      <span>国交省予備費 155億円</span>
+      <span>九州7県</span>
+    </div>
+    <h1>九州ふっこう応援割 発車標</h1>
+    <p class="lede">
+      10月1日宿泊分から一斉に始まる — が、<strong>予約をいつから受け付けるかは県ごとに別</strong>。
+      各県の観光担当課・県議会の補正予算・OTAの販売開始を1日4回追い、動いた県だけを記録しています。
+    </p>
+
+    <div class="gauges">
+      <div class="gauge">
+        <span class="gauge-label">予約開始日 未確定</span>
+        <span class="gauge-value" id="g-undecided">–<span class="unit">/ 7県</span></span>
+        <span class="gauge-note" id="g-undecided-note">読み込み中</span>
+      </div>
+      <div class="gauge">
+        <span class="gauge-label">割引対象開始まで</span>
+        <span class="gauge-value" id="g-countdown">–<span class="unit">日</span></span>
+        <span class="gauge-note">2026年10月1日 宿泊分から</span>
+      </div>
+      <div class="gauge">
+        <span class="gauge-label">最終更新</span>
+        <span class="gauge-value" id="g-updated" style="font-size:22px;">–</span>
+        <span class="gauge-note" id="g-updated-note">自動ウォッチ 8:00 / 12:00 / 17:00 / 20:00 JST</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="board-frame">
+    <div class="board-scroll">
+      <table class="board">
+        <thead>
+          <tr>
+            <th scope="col">県</th>
+            <th scope="col">予約開始</th>
+            <th scope="col">割引対象期間</th>
+            <th scope="col">県議会 補正予算</th>
+            <th scope="col">OTA 販売</th>
+            <th scope="col">出典</th>
+          </tr>
+        </thead>
+        <tbody id="board-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="strip" id="strip">
+    <span><span class="dot" id="conn-dot"></span><span id="conn-text">接続中…</span></span>
+    <span>凡例 — <span class="pill unknown">未公表</span> <span class="pill budget">予算可決</span> <span class="pill fixed">日程確定</span> <span class="pill live">受付中</span></span>
+  </div>
+
+  <section>
+    <h2>変化ログ</h2>
+    <div class="log" id="log"><div class="empty">読み込み中…</div></div>
+  </section>
+
+  <footer>
+    情報源は各県の観光担当課の発表・県議会の議決・OTA各社の特設ページを一次とし、観光庁の
+    <a href="https://www.mlit.go.jp/kankocho/page13_00002.html" target="_blank" rel="noopener">集約ページ</a>
+    は追認に使っています。公式以外を根拠にしたセルには［参考］を付けています。予約可否・条件は必ず各県の公式発表と予約サイトで確認してください。
+  </footer>
+
+</div>
+
+<script>
+
+(function () {
+  "use strict";
+
+  var PREFS = ["福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島"];
+  var START = new Date("2026-10-01T00:00:00+09:00");
+
+  var STATE_ORDER = { live: 0, fixed: 1, budget: 2, unknown: 3 };
+  var STATE_LABEL = { live: "受付中", fixed: "日程確定", budget: "予算可決", unknown: "未公表" };
+
+  var body = document.getElementById("board-body");
+  var logEl = document.getElementById("log");
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function isUnset(v) {
+    return v == null || v === "" || v === "未公表" || v === "-" || v === "—";
+  }
+
+  /* Derive the row's state from the data, so the board never needs a
+     separate status field the writer could forget to update. */
+  function stateOf(p) {
+    if (!p) return "unknown";
+    if (p.state && STATE_ORDER[p.state] != null) return p.state;
+    var ota = p.OTA || p.ota || "";
+    if (/受付中|販売中|開始/.test(ota)) return "live";
+    if (!isUnset(p["予約開始"])) return "fixed";
+    if (/可決/.test(p["議会"] || "")) return "budget";
+    return "unknown";
+  }
+
+  function unofficial(p, field) {
+    var c = p && p["確度"];
+    if (!c) return false;
+    if (typeof c === "string") return c !== "公式";
+    return c[field] && c[field] !== "公式";
+  }
+
+  function cell(p, field, cls) {
+    var v = p ? p[field] : null;
+    var txt = isUnset(v) ? "—" : v;
+    var mark = (!isUnset(v) && unofficial(p, field)) ? '<span class="tag-unofficial">参考</span>' : "";
+    return '<span class="' + cls + '">' + esc(txt) + "</span>" + mark;
+  }
+
+  function renderBoard(prefs) {
+    var rows = PREFS.map(function (name) {
+      return { name: name, p: (prefs && prefs[name]) || null };
+    });
+
+    rows.sort(function (a, b) {
+      var d = STATE_ORDER[stateOf(a.p)] - STATE_ORDER[stateOf(b.p)];
+      return d !== 0 ? d : PREFS.indexOf(a.name) - PREFS.indexOf(b.name);
+    });
+
+    body.innerHTML = rows.map(function (r) {
+      var p = r.p || {};
+      var st = stateOf(r.p);
+      var rate = p["補助率"] || (r.name === "熊本" || r.name === "鹿児島" ? "60%" : "50%");
+      var hi = /60/.test(rate) ? " hi" : "";
+      var dep = isUnset(p["予約開始"])
+        ? '<span class="depart pending">調整中</span>'
+        : '<span class="depart">' + esc(p["予約開始"]) + "</span>" +
+          (unofficial(p, "予約開始") ? '<span class="tag-unofficial">参考</span>' : "");
+
+      var src = "";
+      if (p["出典"]) {
+        var u = String(p["出典"]);
+        src = /^https?:\/\//.test(u)
+          ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(u.replace(/^https?:\/\//, "").slice(0, 38)) + "</a>"
+          : '<span class="sub">' + esc(u) + "</span>";
+      } else {
+        src = '<span class="sub">—</span>';
+      }
+
+      return (
+        '<tr data-state="' + st + '">' +
+          '<td><span class="pref">' + esc(r.name) + '<span class="rate' + hi + '">' + esc(rate) + "</span></span>" +
+            '<div style="margin-top:5px"><span class="pill ' + st + '">' + STATE_LABEL[st] + "</span></div></td>" +
+          "<td>" + dep + "</td>" +
+          "<td>" + cell(p, "対象期間", "sub") + "</td>" +
+          "<td>" + cell(p, "議会", "sub") + "</td>" +
+          "<td>" + cell(p, "OTA", "sub") + "</td>" +
+          '<td class="src">' + src + "</td>" +
+        "</tr>"
+      );
+    }).join("");
+
+    var undecided = rows.filter(function (r) {
+      return isUnset(r.p && r.p["予約開始"]);
+    });
+
+    var gv = document.getElementById("g-undecided");
+    gv.innerHTML = esc(String(undecided.length)) + '<span class="unit">/ 7県</span>';
+    document.getElementById("g-undecided-note").textContent =
+      undecided.length === 0
+        ? "全県確定。このウォッチは役目を終えました"
+        : undecided.map(function (r) { return r.name; }).join("・");
+  }
+
+  function renderCountdown() {
+    var ms = START - Date.now();
+    var el = document.getElementById("g-countdown");
+    if (ms <= 0) {
+      el.innerHTML = '開始<span class="unit">済</span>';
+      return;
+    }
+    var d = Math.ceil(ms / 86400000);
+    el.innerHTML = esc(String(d)) + '<span class="unit">日</span>';
+  }
+
+  function fmt(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return String(iso);
+    var t = new Intl.DateTimeFormat("ja-JP", {
+      month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit",
+      timeZone: "Asia/Tokyo"
+    }).format(d);
+    return t;
+  }
+
+  function renderLog(entries) {
+    if (!entries || !entries.length) {
+      logEl.innerHTML = '<div class="empty">まだ記録された変化はありません。動きがあった回だけここに残ります。</div>';
+      return;
+    }
+    logEl.innerHTML = entries.slice(0, 40).map(function (e) {
+      var changes = (e.changes || []).map(function (c) {
+        var from = isUnset(c.from) ? "未公表" : c.from;
+        return '<div class="log-what"><strong>' + esc(c.pref) + "</strong> " +
+               esc(c.field) + " → " + esc(c.to) +
+               ' <span class="from">（前回: ' + esc(from) + "）</span></div>";
+      }).join("");
+      return '<div class="log-row"><div class="log-when">' + esc(fmt(e.at)) + "</div><div>" +
+             (changes || '<div class="log-what">変化なし</div>') + "</div></div>";
+    }).join("");
+  }
+
+  function setConn(cls, text) {
+    document.getElementById("conn-dot").className = "dot " + cls;
+    document.getElementById("conn-text").textContent = text;
+  }
+
+  /* first frame: the board exists and is legible before any data arrives */
+  renderBoard(null);
+  renderCountdown();
+  setInterval(renderCountdown, 60000);
+
+  var DATA_URL = "data.json";
+
+  async function load() {
+    try {
+      var res = await fetch(DATA_URL + "?t=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      var d = await res.json();
+      renderBoard(d.prefs || null);
+      renderLog(d.history || []);
+      if (d.updated_at) {
+        document.getElementById("g-updated").textContent = fmt(d.updated_at);
+      }
+      setConn("ok", "データ取得 OK（5分ごとに再取得）");
+    } catch (e) {
+      setConn("warn", "データを読み込めませんでした（" + e.message + "）");
+      logEl.innerHTML = '<div class="empty">データを読み込めませんでした。時間をおいて再読み込みしてください。</div>';
+      document.getElementById("g-undecided-note").textContent = "未取得";
+    }
+  }
+
+  load();
+  setInterval(load, 300000);
+})();
+
+</script>
+</body>
+</html>
