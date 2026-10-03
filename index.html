@@ -402,11 +402,27 @@
     .log-row { grid-template-columns: 1fr; gap: 2px; }
     .wrap { padding: 24px 14px 56px; }
   }
+  .notice {
+    margin: 0 0 28px;
+    padding: 14px 18px;
+    border: 1px solid var(--accent);
+    border-left-width: 4px;
+    border-radius: 6px;
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .notice strong { color: var(--accent); }
 </style>
 
 </head>
 <body>
 <div class="wrap">
+
+  <p class="notice" role="note">
+    <strong>この一覧の更新は 2026年9月25日 で終了しました。</strong>
+    以下は当時の記録で、いまの受付状況とは異なる場合があります。予約の可否と条件は、各県の公式発表と予約サイトで確認してください。
+  </p>
 
   <header>
     <div class="eyebrow">
@@ -417,7 +433,7 @@
     <h1>九州ふっこう応援割 発車標</h1>
     <p class="lede">
       10月1日宿泊分から一斉に始まる — が、<strong>予約をいつから受け付けるかは県ごとに別</strong>。
-      各県の観光担当課・県議会の補正予算・OTAの販売開始を1日4回追い、動いた県だけを記録しています。
+      各県の観光担当課・県議会の補正予算・OTAの販売開始を1日4回追い、動いた県だけを記録していました。
     </p>
 
     <div class="gauges">
@@ -434,7 +450,7 @@
       <div class="gauge">
         <span class="gauge-label">最終更新</span>
         <span class="gauge-value" id="g-updated" style="font-size:22px;">–</span>
-        <span class="gauge-note" id="g-updated-note">自動ウォッチ 8:00 / 12:00 / 17:00 / 20:00 JST</span>
+        <span class="gauge-note" id="g-updated-note">自動ウォッチは終了しました</span>
       </div>
     </div>
   </header>
