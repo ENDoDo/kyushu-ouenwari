@@ -4,9 +4,11 @@ on:
   schedule:
     - cron: "*/10 * * * *"  # 10分ごと（GitHub 側の混雑で数分遅れることがある）
   workflow_dispatch:
-  push:
-    branches: [claude/project-thread-imjttm]  # マージ前の動作確認用
-    paths: [watch/**, .github/workflows/watch.yml]
+    inputs:
+      ping:
+        description: "変化がなくても Slack にテスト投稿する"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -27,7 +29,7 @@ jobs:
       - name: check
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: python watch/check.py
+        run: python watch/check.py ${{ inputs.ping && '--ping' || '' }}
       - name: save state
         run: |
           git add watch/state.json

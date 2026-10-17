@@ -5,6 +5,7 @@
 
   python watch/check.py            # 本番（SLACK_WEBHOOK_URL があれば投稿）
   python watch/check.py --dry-run  # 投稿せず、通知文を標準出力に出す
+  python watch/check.py --ping     # 変化がなくても1通投稿する（通知の疎通確認）
 """
 
 import csv
@@ -288,6 +289,9 @@ def main():
             parts.append(f"【九州ふっこう割ウォッチ】生存確認（{stamp}）: {len(SOURCES)}ソース巡回中"
                          + (f"、うち{ng}件は取得失敗" if ng else "、すべて取得できています") + "。直近の巡回で変化はありません。")
 
+    if "--ping" in sys.argv and not parts:
+        parts.append(f"【九州ふっこう割ウォッチ】テスト投稿（{stamp}）: Slack への通知が届いています。"
+                     f"{len(SOURCES)}ソースを巡回中です。")
     if parts:
         post_slack("\n\n".join(parts), dry_run)
     else:
