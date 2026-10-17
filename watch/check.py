@@ -241,10 +241,13 @@ def main():
     with ThreadPoolExecutor(max_workers=8) as ex:
         results = list(ex.map(run, SOURCES))
 
-    goods, others, alerts, baselines, report = [], [], [], [], []
+    AIR_LABEL = {"none": "🚗宿のみ可", "must": "✈️航空券必須", "mixed": "🚗/✈️商品による"}
+    goods, air_goods, others, alerts, baselines, report = [], [], [], [], [], []
     for src, new, err in results:
         prev = sources_state.get(src["id"])
         link = f"<{src['url']}|{src['name']}>"
+        if src.get("air"):
+            link += f"［{AIR_LABEL[src['air']]}" + (f"・{src['note']}" if src.get("note") else "") + "］"
         if err:
             n = (prev or {}).get("errors", 0) + 1
             entry = dict(prev or {}, errors=n, last_error=err)
@@ -262,6 +265,11 @@ def main():
             baselines.append(src["name"])
             continue
         good, other = diff(src, prev["state"], new)
+        if src.get("air") == "must":
+            # 車で行く前提なので、航空券必須の予約先は変化を参考として載せるだけ（メンションしない）
+            if good or other:
+                air_goods.append(f"*{link}*\n" + "\n".join(([f"　🟢 {g}" for g in good] + [f"　{o}" for o in other])[:20]))
+            continue
         if good:
             goods.append(f"*{link}*\n" + "\n".join(f"　🟢 {g}" for g in good[:20]))
         if other:
@@ -271,6 +279,8 @@ def main():
     parts = []
     if goods:
         parts.append(f"🟢 *【九州ふっこう割ウォッチ】空き・再開の可能性（{stamp}）*\n" + "\n".join(goods))
+    if air_goods:
+        parts.append(f"*【参考】航空券とセットでしか買えない予約先の変化（{stamp}）*\n" + "\n".join(air_goods))
     if others:
         parts.append(f"*【九州ふっこう割ウォッチ】状況の変化（{stamp}）*\n" + "\n".join(others))
     if alerts:
