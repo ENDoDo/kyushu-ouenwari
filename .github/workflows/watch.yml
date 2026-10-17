@@ -2,7 +2,8 @@ name: watch
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # 10分ごと（GitHub 側の混雑で数分遅れることがある）
+    # 10分ごと。毎時0分など混む時刻は GitHub 側で遅延・間引きされやすいので、4分ずらしている
+    - cron: "4,14,24,34,44,54 * * * *"
   workflow_dispatch:
     inputs:
       ping:
