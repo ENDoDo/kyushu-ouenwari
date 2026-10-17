@@ -1,8 +1,10 @@
 name: watch
 
+# GitHub の schedule は起動しないことがある（2026-10-17、マージ後75分間に一度も起動しなかった）。
+# そのため1回の実行の中で10分おきに巡回を繰り返し、終わる前に次の実行を自分で起動して途切れなく回す。
+# schedule は、連鎖が何かの理由で切れたときに拾い直すための保険として残している。
 on:
   schedule:
-    # 10分ごと。毎時0分など混む時刻は GitHub 側で遅延・間引きされやすいので、4分ずらしている
     - cron: "4,14,24,34,44,54 * * * *"
   workflow_dispatch:
     inputs:
@@ -13,7 +15,9 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
+# 同時に走るのは1本だけ。待ちは最新の1本に集約されるので、連鎖が二重になることはない
 concurrency:
   group: watch
   cancel-in-progress: false
@@ -21,24 +25,34 @@ concurrency:
 jobs:
   watch:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: check
+      - name: check every 10 minutes
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_MENTION: "<@U0BGUB2NG3T>"  # 検知時に通知を鳴らす相手（Slack のユーザーID）
-        run: python watch/check.py ${{ inputs.ping && '--ping' || '' }}
-      - name: save state
+          PING: ${{ inputs.ping && '--ping' || '' }}
         run: |
-          git add watch/state.json
-          if git diff --cached --quiet; then exit 0; fi
-          git -c user.name="kyushu-watch" -c user.email="actions@github.com" commit -q -m "watch: 状態を更新"
-          for i in 1 2 3; do
-            git pull -q --rebase && git push -q && exit 0
-            sleep 5
+          git config user.name "kyushu-watch"
+          git config user.email "actions@github.com"
+          end=$(( $(date +%s) + 5*3600 + 30*60 ))  # 5時間30分で切り上げて次へ渡す
+          while :; do
+            python watch/check.py $PING || echo "::warning::check.py が失敗しました"
+            PING=""
+            git add watch/state.json
+            if ! git diff --cached --quiet; then
+              git commit -q -m "watch: 状態を更新"
+              for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done
+            fi
+            [ $(( $(date +%s) + 600 )) -lt "$end" ] || break
+            sleep 600
           done
-          exit 1
+      - name: start the next run
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run watch.yml --ref main -R "$GITHUB_REPOSITORY"
