@@ -29,6 +29,7 @@ jobs:
       - name: check
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_MENTION: "<@U0BGUB2NG3T>"  # 検知時に通知を鳴らす相手（Slack のユーザーID）
         run: python watch/check.py ${{ inputs.ping && '--ping' || '' }}
       - name: save state
         run: |

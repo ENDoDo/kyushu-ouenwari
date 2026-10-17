@@ -293,6 +293,11 @@ def main():
         parts.append(f"【九州ふっこう割ウォッチ】テスト投稿（{stamp}）: Slack への通知が届いています。"
                      f"{len(SOURCES)}ソースを巡回中です。")
     if parts:
+        # 検知（空き・変化・取得異常）とテスト投稿だけメンションを付けて、Slack の通知・バッジを鳴らす。
+        # 開始・生存確認は鳴らさない
+        mention = os.environ.get("SLACK_MENTION", "").strip()
+        if mention and (goods or others or alerts or "--ping" in sys.argv):
+            parts[0] = f"{mention} {parts[0]}"
         post_slack("\n\n".join(parts), dry_run)
     else:
         print(f"変化なし（{stamp}）")
