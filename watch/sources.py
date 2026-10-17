@@ -18,10 +18,11 @@ SOURCES = [
      "url": "https://www.jalan.net/kyushu-shien/"},
     {"id": "ana", "name": "ANA X", "kind": "text",
      "url": "https://www.ana.co.jp/ja/jp/domestic/theme/kyushu-ouen/"},
-    *[{"id": f"ana-{p}", "name": f"ANA X（{PREF_JA[p]}）", "kind": "text",
-       "url": f"https://www.ana.co.jp/ja/jp/domestic/theme/kyushu-ouen/{p}/"} for p in PREFS],
     *[{"id": f"rakuten-{p}", "name": f"楽天トラベル（{PREF_JA[p]}）", "kind": "rakuten",
-       "url": f"https://travel.rakuten.co.jp/special/kyushuouen/{p}/"} for p in PREFS],
+       "url": f"https://travel.rakuten.co.jp/special/kyushuouen/{p}/"} for p in PREFS if p != "kagoshima"],
+    # 鹿児島だけクーポン枠の作りが違うので、本文の状況行で見る
+    {"id": "rakuten-kagoshima", "name": "楽天トラベル（鹿児島）", "kind": "text",
+     "url": "https://travel.rakuten.co.jp/special/kyushuouen/kagoshima/"},
     {"id": "knt", "name": "近畿日本ツーリスト", "kind": "text",
      "url": "https://www.knt.co.jp/kyushu-ouenwari/"},
     {"id": "rurubu", "name": "るるぶトラベル", "kind": "text",
@@ -39,7 +40,7 @@ SOURCES = [
     {"id": "pref-fukuoka", "name": "福岡県公式", "kind": "text", "url": "https://fukuoka-fukkou-wari.jp/"},
     {"id": "pref-saga", "name": "佐賀県公式", "kind": "text", "url": "https://saga-ouen.jp/"},
     {"id": "pref-nagasaki", "name": "長崎県公式", "kind": "text", "url": "https://nagasaki-fukkou-wari.jp/"},
-    {"id": "pref-kumamoto", "name": "熊本県公式", "kind": "text", "url": "https://kumamoto-ouenwari.com/index.html"},
+    # 熊本県公式は中身を JavaScript で読み込むため、取得しても状況が読めない（対象外）
     {"id": "pref-oita", "name": "大分県公式", "kind": "text", "url": "https://oita-fukkou-wari.jp/"},
     {"id": "pref-miyazaki", "name": "宮崎県公式", "kind": "text", "url": "https://miyazaki-ouen.jp/"},
     {"id": "pref-kagoshima", "name": "鹿児島県公式", "kind": "text", "url": "https://fukko-ouenwari.pref.kagoshima.jp/"},

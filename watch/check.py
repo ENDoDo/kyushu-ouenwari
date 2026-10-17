@@ -253,7 +253,7 @@ def main():
             report.append(f"| {src['name']} | ❌ {err} |")
             continue
         recovered = prev and prev.get("errors", 0) >= ERROR_ALERT_AT
-        sources_state[src["id"]] = {"state": new, "errors": 0, "checked_at": now.isoformat(timespec="minutes")}
+        sources_state[src["id"]] = {"state": new, "errors": 0}
         if recovered:
             alerts.append(f"✅ {link}: 取得が復旧しました")
         report.append(f"| {src['name']} | {summarize(src, new)} |")
@@ -293,7 +293,6 @@ def main():
     else:
         print(f"変化なし（{stamp}）")
 
-    saved["updated_at"] = now.isoformat(timespec="minutes")
     with open(STATE_PATH, "w", encoding="utf-8") as f:
         json.dump(saved, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write("\n")
