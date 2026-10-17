@@ -1,0 +1,40 @@
+name: watch
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # 10分ごと（GitHub 側の混雑で数分遅れることがある）
+  workflow_dispatch:
+  push:
+    branches: [claude/project-thread-imjttm]  # マージ前の動作確認用
+    paths: [watch/**, .github/workflows/watch.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: check
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python watch/check.py
+      - name: save state
+        run: |
+          git add watch/state.json
+          if git diff --cached --quiet; then exit 0; fi
+          git -c user.name="kyushu-watch" -c user.email="actions@github.com" commit -q -m "watch: 状態を更新"
+          for i in 1 2 3; do
+            git pull -q --rebase && git push -q && exit 0
+            sleep 5
+          done
+          exit 1
