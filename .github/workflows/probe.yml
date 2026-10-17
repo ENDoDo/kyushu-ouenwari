@@ -1,0 +1,37 @@
+name: probe
+on:
+  push:
+    branches: [claude/project-thread-imjttm]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch channel pages
+        run: |
+          UA='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36'
+          for u in \
+            https://travel.rakuten.co.jp/special/kyushuouen/ \
+            https://travel.rakuten.co.jp/special/kyushuouen/oita/ \
+            https://www.jalan.net/kyushu-shien/ \
+            https://www.ikyu.com/special/01/kyushuouen/ \
+            https://travel.yahoo.co.jp/feature/kyushuouen/ \
+            https://www.jal.co.jp/jp/ja/domtour/kyu/kyusyu-fukko-ouen/ \
+            https://www.ana.co.jp/ja/jp/domestic/theme/kyushu-ouen/ \
+            https://www.knt.co.jp/kyushu-ouenwari/ \
+            https://www.rurubu.travel/theme/kyushu_fukkou_campaign/ \
+            https://www.jtb.co.jp/kokunai/kyushu-ouen/ \
+            https://domdp.airtrip.jp/campaign/fukkou-wari/ \
+            https://www.needstour.com/kyushu/fukko-oenwari/ \
+            https://jcation.com/blog/kyushuouen/ \
+            https://oita-fukkou-wari.jp/stay/ \
+            https://saga-ouen.jp/ \
+            https://nagasaki-fukkou-wari.jp/ \
+            https://kumamoto-ouenwari.com/accommodation-list.html \
+            https://miyazaki-ouen.jp/ \
+            https://fukko-ouenwari.pref.kagoshima.jp/stay/ \
+            https://www.mlit.go.jp/kankocho/page13_00002.html ; do
+            code=$(curl -s -L -m 30 -A "$UA" -o page.html -w '%{http_code} %{size_download}' "$u" || echo FAIL)
+            echo "=== $u -> $code"
+            grep -o -E '.{0,50}(停止|終了|受付中|配布中|開催中|販売中|完売|売切|再開|獲得).{0,50}' page.html | head -6 || true
+            grep -o -E '(src|href)="[^"]*\.(js|json)[^"]*"' page.html | grep -v -E 'gtm|google|analytics' | head -5 || true
+          done
