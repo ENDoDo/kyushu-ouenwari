@@ -22,13 +22,13 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(__file__))
-from sources import SOURCES  # noqa: E402
+from sources import FOCUS_STAYS, SOURCES, UPCOMING  # noqa: E402
 
 STATE_PATH = os.path.join(os.path.dirname(__file__), "state.json")
 JST = dt.timezone(dt.timedelta(hours=9))
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/130 Safari/537.36")
-HEARTBEAT_HOUR = 8  # JST。この時刻以降の最初の実行で1日1回だけ生存確認を出す
+HEARTBEAT_HOUR = 8  # JST。この時刻以降の最初の実行で1日1回だけ現状まとめを出す
 ERROR_ALERT_AT = 3  # 連続でこの回数取れなかったら知らせる
 
 STATUS_RE = re.compile(
@@ -209,6 +209,60 @@ def summarize(src, state):
     return f"状況行 {len(state)}"
 
 
+AIR_LABEL = {"none": "🚗宿のみ可", "must": "✈️航空券必須", "mixed": "🚗/✈️商品による"}
+CLOSED_RE = re.compile(r"終了|停止|完売|売切|売り切れ|上限に達")
+
+
+def open_lines(state):
+    """text の状況行のうち「いま買える」と読めるものだけ（注意書きと終了の告知は除く）。"""
+    return [l for l in state if OPEN_RE.search(l) and "再開" not in l
+            and not CLOSED_RE.search(l) and not l.lstrip("[").startswith("※")]
+
+
+def daily_summary(sources_state, stamp, now):
+    """毎朝の現状まとめ。各ソースの最新状態から、買えそうなものを先に並べる。"""
+    stays, cars, flights, failed = [], [], [], []
+    for src in SOURCES:
+        entry = sources_state.get(src["id"]) or {}
+        st = entry.get("state")
+        link = f"<{src['url']}|{src['name']}>"
+        if entry.get("errors"):
+            failed.append(src["name"])
+        if st is None:
+            continue
+        if src["kind"] == "staycsv":
+            f = st["facilities"]
+            sold = sum(1 for v in f.values() if v == "完売")
+            line = f"・{link}: {len(f)}施設中 完売{sold}（残り{len(f) - sold}施設は申し込める可能性）"
+            for key in FOCUS_STAYS:
+                hits = [(n, v) for n, v in f.items() if key.lower() in n.lower()]
+                if hits:
+                    line += "\n　　" + " / ".join(f"{n}: {'完売' if v == '完売' else '完売表示なし'}" for n, v in hits)
+            stays.append(line)
+            continue
+        if src["kind"] == "rakuten":
+            live = {k: v for k, v in st.items() if k != "expired"}
+            text = ("受付中の枠あり（" + ", ".join(f"{k}×{v}" for k, v in sorted(live.items())) + "）") if live else "全枠終了"
+        elif src.get("air"):
+            ol = open_lines(st)
+            text = " / ".join(l[:80] for l in ol[:3]) if ol else "販売中の表示なし"
+        else:
+            continue  # 県公式・観光庁は変化があったときだけ載せる
+        (flights if src.get("air") == "must" else cars).append(f"・{link}［{AIR_LABEL[src['air']]}］: {text}")
+
+    today = now.strftime("%Y-%m-%d")
+    upcoming = [f"・{u['at'][5:].replace('-', '/').replace(' 00:00', '')} {u['name']}［{AIR_LABEL[u['air']]}］"
+                for u in sorted(UPCOMING, key=lambda u: u["at"]) if u["at"][:10] >= today]
+    out = [f"*【九州ふっこう割ウォッチ】現状まとめ（{stamp}）*"]
+    out.append("*🚗 宿の直接予約（県の参画施設一覧）*\n" + "\n".join(stays))
+    out.append("*予約サイト・旅行会社*\n" + "\n".join(cars))
+    if upcoming:
+        out.append("*日時が決まっている次の販売*\n" + "\n".join(upcoming))
+    out.append("*【参考】航空券必須*\n" + "\n".join(flights))
+    out.append(f"{len(SOURCES)}ソースを10分ごとに巡回中" + (f"。取得失敗: {', '.join(failed)}" if failed else "。すべて取得できています") + "。")
+    return "\n\n".join(out)
+
+
 # ---------------------------------------------------------------- 通知
 
 def post_slack(text, dry_run):
@@ -241,7 +295,6 @@ def main():
     with ThreadPoolExecutor(max_workers=8) as ex:
         results = list(ex.map(run, SOURCES))
 
-    AIR_LABEL = {"none": "🚗宿のみ可", "must": "✈️航空券必須", "mixed": "🚗/✈️商品による"}
     goods, air_goods, others, alerts, baselines, report = [], [], [], [], [], []
     for src, new, err in results:
         prev = sources_state.get(src["id"])
@@ -287,24 +340,22 @@ def main():
         parts.append("\n".join(alerts))
     if baselines and len(baselines) == len(SOURCES):
         parts.append(f"【九州ふっこう割ウォッチ】監視を始めました（{stamp}）。{len(SOURCES)}ソースを巡回します。"
-                     "以後は変化があったときだけ投稿し、毎朝8時台に1回だけ生存確認を出します。")
+                     "以後は変化があったときだけ投稿し、毎朝8時台に1回だけ現状まとめを出します。")
     elif baselines:
         parts.append(f"【九州ふっこう割ウォッチ】新しく監視に加えました: {', '.join(baselines)}")
 
     today = now.strftime("%Y-%m-%d")
-    if now.hour >= HEARTBEAT_HOUR and saved.get("last_heartbeat") != today:
-        saved["last_heartbeat"] = today
-        if not parts:
-            ng = sum(1 for _, n, e in results if e)
-            parts.append(f"【九州ふっこう割ウォッチ】生存確認（{stamp}）: {len(SOURCES)}ソース巡回中"
-                         + (f"、うち{ng}件は取得失敗" if ng else "、すべて取得できています") + "。直近の巡回で変化はありません。")
+    saved.pop("last_heartbeat", None)  # 旧名（生存確認だけだった頃）
+    if now.hour >= HEARTBEAT_HOUR and saved.get("last_summary") != today:
+        saved["last_summary"] = today
+        parts.append(daily_summary(sources_state, stamp, now))
 
     if "--ping" in sys.argv and not parts:
         parts.append(f"【九州ふっこう割ウォッチ】テスト投稿（{stamp}）: Slack への通知が届いています。"
                      f"{len(SOURCES)}ソースを巡回中です。")
     if parts:
         # 検知（空き・変化・取得異常）とテスト投稿だけメンションを付けて、Slack の通知・バッジを鳴らす。
-        # 開始・生存確認は鳴らさない
+        # 開始・現状まとめは鳴らさない
         mention = os.environ.get("SLACK_MENTION", "").strip()
         if mention and (goods or others or alerts or "--ping" in sys.argv):
             parts[0] = f"{mention} {parts[0]}"

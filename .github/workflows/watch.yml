@@ -41,6 +41,7 @@ jobs:
           git config user.email "actions@github.com"
           end=$(( $(date +%s) + 5*3600 + 30*60 ))  # 5時間30分で切り上げて次へ渡す
           while :; do
+            git pull -q --rebase || true  # main に入った check.py の修正を次の巡回から効かせる
             python watch/check.py $PING || echo "::warning::check.py が失敗しました"
             PING=""
             git add watch/state.json
