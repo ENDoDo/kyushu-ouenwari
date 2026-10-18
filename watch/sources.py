@@ -61,3 +61,16 @@ SOURCES = [
     {"id": "stay-fukuoka", "name": "福岡 宿直接", "air": "none", "kind": "staycsv",
      "url": "https://fukuoka-fukkou-wari.jp/stay/", "prefix": "fukuoka"},
 ]
+
+# 朝の現状まとめに載せる「日時が決まっている次の販売」。過ぎたものは自動で出なくなる。
+# air は SOURCES と同じ意味（2026-10-17 に各社・各県のページで確認）
+UPCOMING = [
+    {"at": "2026-10-19 13:00", "name": "鹿児島 Jcation", "air": "must"},
+    {"at": "2026-10-19 00:00", "name": "佐賀 JTB", "air": "mixed"},
+    {"at": "2026-10-23 10:00", "name": "長崎 宿の直接予約（第2期）", "air": "none"},
+    {"at": "2026-10-26 00:00", "name": "鹿児島 オリオンツアー", "air": "mixed"},
+    {"at": "2026-11-10 00:00", "name": "佐賀市観光協会", "air": "mixed"},
+]
+
+# 朝の現状まとめで個別に状態を書く宿（施設名の一部で照合）
+FOCUS_STAYS = ["COMOREBI"]
