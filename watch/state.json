@@ -7249,6 +7249,486 @@
    "url": "https://tottoitto.wixsite.com/amami-guesthouse",
    "why": ""
   },
+  "stay-kagoshima|奄美ゲストハウス宇宿サンライズビーチ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|奄美ポートタワーホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://breezbay-group.com/amami-pth/",
+   "why": ""
+  },
+  "stay-kagoshima|奄美ラッキーハウス": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|奄美ラッキーライフ１": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|奄美ラッキーライフ２": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|奄美ラッキー海の家": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|奄美リゾートばしゃ山村": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "http://basyayama-mura.com/",
+   "why": ""
+  },
+  "stay-kagoshima|奄美古民家一棟貸宿奄晴-amaharashi-": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|奄美山羊島ホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://yagijima.com/",
+   "why": ""
+  },
+  "stay-kagoshima|奄美民泊村＆サウナ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://amami-minpaku-mura.com/",
+   "why": ""
+  },
+  "stay-kagoshima|奄美温泉 大和 ハナハナビーチリゾート": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.amamihanahana.com/",
+   "why": ""
+  },
+  "stay-kagoshima|妙見楽園荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://myoken-rakuenso.com/",
+   "why": ""
+  },
+  "stay-kagoshima|妙見温泉 天けい荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "http://www5.synapse.ne.jp/tenkeisou/",
+   "why": "取得できない: URLError"
+  },
+  "stay-kagoshima|妙見温泉ねむ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.m-nem.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|妙見石原荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.m-ishiharaso.com/",
+   "why": ""
+  },
+  "stay-kagoshima|子供部屋のある一棟貸し奄宿り": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://amamiamayadori.com/",
+   "why": ""
+  },
+  "stay-kagoshima|安房やまざくらの宿": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://himesyara.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|安楽温泉朱峰": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "http://www.syumine.com",
+   "why": ""
+  },
+  "stay-kagoshima|富屋旅館": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "http://www.tomiyaryokan-chiran.jp/",
+   "why": "取得できない: URLError"
+  },
+  "stay-kagoshima|屋久の宿たぐち": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.yado-taguchi.com/",
+   "why": ""
+  },
+  "stay-kagoshima|屋久島 コテージ 森のこかげ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://morinokokage.net/",
+   "why": ""
+  },
+  "stay-kagoshima|屋久島 コテージ 森のフェアリー": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|屋久島いわさきホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.yakushima.iwasakihotels.com/",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|屋久島ひめしゃらの宿": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://himesyara.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|屋久島ペンション ルアナハウス": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "http://luana-house.com",
+   "why": ""
+  },
+  "stay-kagoshima|屋久島ペンション ルアナハウスーオハナハウス": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "http://luana-house.com",
+   "why": ""
+  },
+  "stay-kagoshima|屋久島雫ノ杜": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|山くじら": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.yamakujila.com/",
+   "why": ""
+  },
+  "stay-kagoshima|岩屋公園キャンプ場": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "url": "http://iwayacamp.com",
+   "why": "犬と一緒にキャンプはいかがですか？ 専用ドッグラン付きでBBQも快適ですよ。🐕️ ネットか"
+  },
+  "stay-kagoshima|岩戸温泉": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|島宿ＨＯＰＥ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://shimayado-hope.com/shimayado/",
+   "why": ""
+  },
+  "stay-kagoshima|幸の宿 徳之島": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|幸風": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|彩葉荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://irohasou.my.canva.site",
+   "why": ""
+  },
+  "stay-kagoshima|御宿ボスのお家": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://instagram.com/boss.s.house2023?dlrf=cHYwM2Q5OHI2cG10&utm_source=qr",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|徳之島ゲストハウスみち": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://michiguesthouse.com",
+   "why": ""
+  },
+  "stay-kagoshima|徳之島ゲストハウス寄りみち": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://yori-michi.com",
+   "why": ""
+  },
+  "stay-kagoshima|志布志の宿 きたの": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|志布志湾大黒リゾートホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://daikoku-hotels.com/",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|手塚ryokan": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.tetsuka.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|手広ビーチサイドペンショングリーンヒル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://greenhill-amami.com",
+   "why": ""
+  },
+  "stay-kagoshima|指宿こころの宿": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|指宿シーサイドホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.ibusuki-seaside.co.jp",
+   "why": ""
+  },
+  "stay-kagoshima|指宿フェニックスホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://phoenixhotel.co.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|指宿ロイヤルホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://ibusukiroyalhotel.co.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|指宿民宿千成莊": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.ibusuki-chuoryokan-kumiai.com/sennari",
+   "why": ""
+  },
+  "stay-kagoshima|指宿海上ホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://kaijyohotel.co.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|指宿温泉 ホテル翔月": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|指宿静香": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|指宿静香Ⅱ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|指宿静香Ⅲ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|数寄の宿 野鶴亭": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "http://www.yakakutei.com",
+   "why": ""
+  },
+  "stay-kagoshima|料亭旅館 竹千代 霧島別邸": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://kirishima-takechiyo.nisikawa.net",
+   "why": "取得できない: HTTPError"
+  },
+  "stay-kagoshima|旅籠しび荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://shibisou.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|旅行人山荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://ryokojin.com/",
+   "why": ""
+  },
+  "stay-kagoshima|旅館 薩摩の里": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|旅館 送陽邸": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://hotel-souyoutei.com/",
+   "why": ""
+  },
+  "stay-kagoshima|旅館月見荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|旅館遠見": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|日新館": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|日置市伊集院健康づくり複合施設ゆすいん": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|星砂荘": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://yoronhoshizunaso.com/",
+   "why": ""
+  },
+  "stay-kagoshima|時のほとり": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|暮らしの宿福のや": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.fukunoya-ei.com/",
+   "why": ""
+  },
+  "stay-kagoshima|月みるいえ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.chillnn.com/ja/197525236a4181",
+   "why": ""
+  },
+  "stay-kagoshima|有限会社 新湯温泉": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://shinyuonsen.com/",
+   "why": ""
+  },
+  "stay-kagoshima|木の匙": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://kinosaji.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|木の香の宿 ゆのとこ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://yunotoko.com/",
+   "why": ""
+  },
+  "stay-kagoshima|木の香の宿 ゆのとこ 別館": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://yunotoko.com/annex",
+   "why": ""
+  },
+  "stay-kagoshima|村田旅館": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://murataryokan.com",
+   "why": ""
+  },
+  "stay-kagoshima|杜の宿 羽神の郷": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.hagaminosato.com",
+   "why": ""
+  },
+  "stay-kagoshima|東横INN薩摩川内駅東口": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.toyoko-inn.com",
+   "why": ""
+  },
+  "stay-kagoshima|東横INN鹿児島中央駅東口": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.toyoko-inn.com/",
+   "why": ""
+  },
+  "stay-kagoshima|東横INN鹿児島中央駅西口": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|東横INN鹿児島天文館Ⅰ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.toyoko-inn.com/search/detail/00065/?people=1&room=1&smoking=noSmoking&start=2026-10-09&end=2026-10-10",
+   "why": ""
+  },
+  "stay-kagoshima|東横INN鹿児島天文館Ⅱ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://www.toyoko-inn.com/search/detail/00089/?people=1&room=1&smoking=noSmoking&start=2026-10-09&end=2026-10-10",
+   "why": ""
+  },
+  "stay-kagoshima|枕崎ステーションホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "https://makurazaki-s-hotel.jp/",
+   "why": ""
+  },
+  "stay-kagoshima|桜島シーサイドホテル": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|森のやかた湯ったり館": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "url": "",
+   "why": "公式サイトなし"
+  },
+  "stay-kagoshima|楽暮-Luck 奄美大島": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "url": "https://luck-life.biz/",
+   "why": "三世代で泊まれる一棟貸し宿【最大15名・ペット可】 MENU ホーム 楽暮 -Luckに"
+  },
   "stay-kagoshima|癒しの館「つわんこ」": {
    "at": "2026-10-19",
    "pet": "可",
