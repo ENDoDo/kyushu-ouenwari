@@ -234,7 +234,10 @@ def open_lines(state):
             and not CLOSED_RE.search(l) and not l.lstrip("[").startswith("※")]
 
 
-def pet_list(src, sources_state, pets, title, cap=15):
+PET_NOTE = "（施設名と公式サイトの記載から自動判定。犬の大きさ・頭数・料金は各宿で確認してください）"
+
+
+def pet_list(src, sources_state, pets, title, cap=15, note=True):
     """ペット可（要確認を含む）で、いま完売表示がない宿の一覧。"""
     f = ((sources_state.get(src["id"]) or {}).get("state") or {}).get("facilities", {})
     hits = [(n, pets[pet_key(src, n)]) for n, v in f.items()
@@ -244,8 +247,7 @@ def pet_list(src, sources_state, pets, title, cap=15):
     if len(hits) > cap:
         lines.append(f"・…ほか{len(hits) - cap}施設")
     head = f"🐶 *{title}: <{src['url']}|{src['name']}>* 完売表示なしのペット可 {len(hits)}施設"
-    note = "（施設名と公式サイトの記載から自動判定。犬の大きさ・頭数・料金は各宿で確認してください）"
-    return head + note + ("\n" + "\n".join(lines) if lines else "")
+    return head + (PET_NOTE if note else "") + ("\n" + "\n".join(lines) if lines else "")
 
 
 def daily_summary(sources_state, stamp, now, pets=None):
@@ -285,8 +287,8 @@ def daily_summary(sources_state, stamp, now, pets=None):
     out = [f"*【九州ふっこう割ウォッチ】現状まとめ（{stamp}）*"]
     out.append("*🚗 宿の直接予約（県の参画施設一覧）*\n" + "\n".join(stays))
     if pets:
-        dog = [pet_list(s, sources_state, pets, "ペット同伴可", cap=8) for s in SOURCES if s["kind"] == "staycsv"]
-        out.append("\n".join(dog))
+        dog = [pet_list(s, sources_state, pets, "ペット同伴可", cap=8, note=False) for s in SOURCES if s["kind"] == "staycsv"]
+        out.append("\n".join(dog) + "\n" + PET_NOTE)
     out.append("*予約サイト・旅行会社*\n" + "\n".join(cars))
     if upcoming:
         out.append("*日時が決まっている次の販売*\n" + "\n".join(upcoming))
