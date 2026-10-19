@@ -176,10 +176,18 @@ def pet_key(src, name):
     return f"{src['id']}|{name}"
 
 
-def diff(src, old, new, pets=None):
+def stay_link(name, url):
+    """宿名を Slack のリンクにする。公式サイトが無ければ宿名の Google 検索へ。"""
+    if not url:
+        url = "https://www.google.com/search?q=" + urllib.parse.quote(name)
+    label = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("|", "｜")
+    return f"<{url}|{label}>"
+
+
+def diff(src, old, new, pets=None, urls=None):
     """(🟢 買える側の変化, その他の変化, 🐶 ペット可の宿の買える側の変化) を文字列のリストで返す。"""
     good, other, dog = [], [], []
-    pets = pets or {}
+    pets, urls = pets or {}, urls or {}
     if src["kind"] == "text":
         added = [l for l in new if l not in old]
         removed = [l for l in old if l not in new]
@@ -197,15 +205,16 @@ def diff(src, old, new, pets=None):
         of, nf = old["facilities"], new["facilities"]
         for name, st in nf.items():
             p = pets.get(pet_key(src, name))
+            link = stay_link(name, urls.get(pet_key(src, name)))
             line = None
             if name not in of:
-                line = f"新規掲載: {name}（{st}）{pet.mark(p)}"
+                line = f"新規掲載: {link}（{st}）{pet.mark(p)}"
                 (good if st != "完売" else other).append(line)
             elif of[name] == "完売" and st != "完売":
-                line = f"完売が外れた: {name}{pet.mark(p)}"
+                line = f"完売が外れた: {link}{pet.mark(p)}"
                 good.append(line)
             elif of[name] != "完売" and st == "完売":
-                other.append(f"完売になった: {name}{pet.mark(p)}")
+                other.append(f"完売になった: {link}{pet.mark(p)}")
             if line and st != "完売" and p and p["pet"] in pet.PET_OK:
                 dog.append(line)
         for name in of:
@@ -243,7 +252,7 @@ def pet_list(src, sources_state, pets, title, cap=15, note=True):
     hits = [(n, pets[pet_key(src, n)]) for n, v in f.items()
             if v != "完売" and (pets.get(pet_key(src, n)) or {}).get("pet") in pet.PET_OK]
     hits.sort(key=lambda h: (h[1]["pet"] != "可", h[0]))
-    lines = [f"・{n}{pet.mark(p)}" for n, p in hits[:cap]]
+    lines = [f"・{stay_link(n, p.get('url'))}{pet.mark(p)}" for n, p in hits[:cap]]
     if len(hits) > cap:
         lines.append(f"・…ほか{len(hits) - cap}施設")
     head = f"🐶 *{title}: <{src['url']}|{src['name']}>* 完売表示なしのペット可 {len(hits)}施設"
@@ -345,6 +354,11 @@ def main():
     except Exception as e:  # noqa: BLE001 — ペット判定の失敗で空き監視を止めない
         print(f"::warning::ペット判定に失敗: {type(e).__name__}: {e}")
         pet_checked = 0
+    # 通知の宿名を公式サイトへのリンクにするため、判定済みの宿には最新の URL を持たせておく
+    urls = {k: pet.normalize_url(hp) for k, (n, hp) in targets.items()}
+    for k, u in urls.items():
+        if k in pets:
+            pets[k]["url"] = u
 
     goods, dogs, air_goods, others, alerts, baselines, report = [], [], [], [], [], [], []
     for src, new, err in results:
@@ -368,7 +382,7 @@ def main():
         if not prev or "state" not in prev:
             baselines.append(src["name"])
             continue
-        good, other, dog = diff(src, prev["state"], new, pets)
+        good, other, dog = diff(src, prev["state"], new, pets, urls)
         if dog:
             dogs.append(f"*{link}*\n" + "\n".join(f"　🐶 {d}" for d in dog[:20]))
         if src.get("air") == "must":
