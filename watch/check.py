@@ -340,7 +340,11 @@ def main():
     for key in list(pets):
         if key.split("|", 1)[0] in checked_sources and key not in targets:
             del pets[key]
-    pet_checked = pet.update(pets, targets, now.strftime("%Y-%m-%d"), fetch, decode, html_to_lines)
+    try:
+        pet_checked = pet.update(pets, targets, now.strftime("%Y-%m-%d"), fetch, decode, html_to_lines)
+    except Exception as e:  # noqa: BLE001 — ペット判定の失敗で空き監視を止めない
+        print(f"::warning::ペット判定に失敗: {type(e).__name__}: {e}")
+        pet_checked = 0
 
     goods, dogs, air_goods, others, alerts, baselines, report = [], [], [], [], [], [], []
     for src, new, err in results:
