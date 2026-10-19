@@ -23,12 +23,17 @@ PET_BATCH = 80  # 1回の巡回で新しく調べる施設数の上限（10分�
 
 POS_RE = re.compile(
     r"ペット(?:同伴|宿泊|連れ|と一緒|と泊|とお泊|と過ご|ルーム|対応|専用|可|ＯＫ|OK|ok|も泊|も一緒|もご一緒)"
-    r"|愛犬|ワンちゃん|わんちゃん|ワンコ|わんこ|ドッグラン|ドッグフリー|小型犬|犬と(?:泊|一緒|過ご|旅)|犬連れ|犬同伴|with\s*dogs?|pet[\s-]?friendly",
+    r"|ペット(?:同伴|宿泊)?[：:]?\s*\n\s*(?:可|OK|○|◯)(?=\s|$)"  # 表の「ペット｜可」が行で分かれた形
+    r"|愛犬|ワンちゃん|わんちゃん|わんこ|ドッグラン|ドッグフリー|小型犬|犬と(?:泊|一緒|過ご|旅)|犬連れ|犬同伴|with\s*dogs?|pet[\s-]?friendly",
     re.I)
 NEG_RE = re.compile(
     r"ペット[^。\n]{0,20}(?:不可|お断り|ご遠慮|できません|禁止|NG)"
     r"|(?:ペット|動物)(?:の|を)?(?:同伴|持ち込み|お持ち込み|入館|宿泊)[^。\n]{0,12}(?:不可|お断り|ご遠慮|できません|禁止)"
+    r"|ペット[^。\n]{0,6}\s*\n\s*(?:不可|NG|×|✕)"  # 表の「ペット同伴｜不可」が行で分かれた形
     r"|no\s+pets", re.I)
+# 「ペットと泊まれますか？」のような FAQ の問いは、答えの側で決める
+QUESTION_RE = re.compile(r"^[^。\n]{0,20}[？?]")
+REFUSAL_RE = re.compile(r"申し訳|恐れ入り|お断り|できません|ご遠慮|いただけません|不可")
 # 補助犬だけの言及は「可」と読まない
 SERVICE_DOG_RE = re.compile(r"(?:盲導犬|介助犬|聴導犬|身体障害者補助犬|補助犬)")
 # 予約サイトや SNS の URL は、宿の情報ではなくサイト共通のメニューを拾うので見ない
@@ -43,6 +48,9 @@ def classify_text(text):
     pos = [m for m in POS_RE.finditer(text)
            if not SERVICE_DOG_RE.search(text[max(0, m.start() - 15):m.end() + 15])]
     neg = list(NEG_RE.finditer(text))
+    asked = [m for m in pos if QUESTION_RE.search(text[m.end():m.end() + 25])]
+    pos = [m for m in pos if m not in asked]
+    refused = [m for m in asked if REFUSAL_RE.search(text[m.end():m.end() + 80])]
     # 「ペット不可」は POS の「ペット…可」にも当たるので、NEG に重なる POS は数えない
     pos = [m for m in pos if not any(n.start() <= m.start() < n.end() for n in neg)]
     snip = lambda m: re.sub(r"\s+", " ", text[max(0, m.start() - 20):m.end() + 20]).strip()
@@ -50,8 +58,8 @@ def classify_text(text):
         return "要確認", snip(pos[0])
     if pos:
         return "可", snip(pos[0])
-    if neg:
-        return "不可", snip(neg[0])
+    if neg or refused:
+        return "不可", snip((neg or refused)[0])
     return "不明", ""
 
 

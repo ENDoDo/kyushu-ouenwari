@@ -3,7 +3,7 @@ import collections, os, random, sys
 sys.path.insert(0, os.path.dirname(__file__))
 import pet
 from check import SOURCES, decode, extract_staycsv, fetch, html_to_lines
-random.seed(1)
+random.seed(2)
 items = []
 for src in SOURCES:
     if src["kind"] != "staycsv": continue
