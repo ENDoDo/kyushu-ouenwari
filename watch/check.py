@@ -22,6 +22,7 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(__file__))
+import pet  # noqa: E402
 from sources import FOCUS_STAYS, SOURCES, UPCOMING  # noqa: E402
 
 STATE_PATH = os.path.join(os.path.dirname(__file__), "state.json")
@@ -137,9 +138,10 @@ def extract_staycsv(src):
     header, data = rows[0], rows[1:]
     name_i = pick_col(header, "施設名", "宿泊施設", "名称")
     note_i = pick_col(header, "お知らせ", "備考", "販売状況")
+    hp_i = pick_col(header, "ホームページ", "HP")
     if name_i is None:
         raise ValueError(f"施設名の列が見つからない: {header}")
-    facilities = {}
+    facilities, hp = {}, {}
     for r in data:
         if len(r) <= name_i or not r[name_i].strip():
             continue
@@ -151,7 +153,9 @@ def extract_staycsv(src):
         while key in facilities:
             key, n = f"{name} ({n})", n + 1
         facilities[key] = "完売" if sold else "掲載中"
-    return {"csv": csv_url.rsplit("/", 1)[-1], "facilities": facilities}
+        hp[key] = r[hp_i].strip() if hp_i is not None and hp_i < len(r) else ""
+    # "_hp" はペット判定にだけ使い、state.json には残さない
+    return {"csv": csv_url.rsplit("/", 1)[-1], "facilities": facilities, "_hp": hp}
 
 
 def check(src):
@@ -168,9 +172,14 @@ def check(src):
 
 # ---------------------------------------------------------------- 差分
 
-def diff(src, old, new):
-    """(🟢 買える側の変化, その他の変化) を文字列のリストで返す。"""
-    good, other = [], []
+def pet_key(src, name):
+    return f"{src['id']}|{name}"
+
+
+def diff(src, old, new, pets=None):
+    """(🟢 買える側の変化, その他の変化, 🐶 ペット可の宿の買える側の変化) を文字列のリストで返す。"""
+    good, other, dog = [], [], []
+    pets = pets or {}
     if src["kind"] == "text":
         added = [l for l in new if l not in old]
         removed = [l for l in old if l not in new]
@@ -187,16 +196,22 @@ def diff(src, old, new):
     elif src["kind"] == "staycsv":
         of, nf = old["facilities"], new["facilities"]
         for name, st in nf.items():
+            p = pets.get(pet_key(src, name))
+            line = None
             if name not in of:
-                (good if st != "完売" else other).append(f"新規掲載: {name}（{st}）")
+                line = f"新規掲載: {name}（{st}）{pet.mark(p)}"
+                (good if st != "完売" else other).append(line)
             elif of[name] == "完売" and st != "完売":
-                good.append(f"完売が外れた: {name}")
+                line = f"完売が外れた: {name}{pet.mark(p)}"
+                good.append(line)
             elif of[name] != "完売" and st == "完売":
-                other.append(f"完売になった: {name}")
+                other.append(f"完売になった: {name}{pet.mark(p)}")
+            if line and st != "完売" and p and p["pet"] in pet.PET_OK:
+                dog.append(line)
         for name in of:
             if name not in nf:
                 other.append(f"一覧から消えた: {name}")
-    return good, other
+    return good, other, dog
 
 
 def summarize(src, state):
@@ -219,7 +234,23 @@ def open_lines(state):
             and not CLOSED_RE.search(l) and not l.lstrip("[").startswith("※")]
 
 
-def daily_summary(sources_state, stamp, now):
+PET_NOTE = "（施設名と公式サイトの記載から自動判定。犬の大きさ・頭数・料金は各宿で確認してください）"
+
+
+def pet_list(src, sources_state, pets, title, cap=15, note=True):
+    """ペット可（要確認を含む）で、いま完売表示がない宿の一覧。"""
+    f = ((sources_state.get(src["id"]) or {}).get("state") or {}).get("facilities", {})
+    hits = [(n, pets[pet_key(src, n)]) for n, v in f.items()
+            if v != "完売" and (pets.get(pet_key(src, n)) or {}).get("pet") in pet.PET_OK]
+    hits.sort(key=lambda h: (h[1]["pet"] != "可", h[0]))
+    lines = [f"・{n}{pet.mark(p)}" for n, p in hits[:cap]]
+    if len(hits) > cap:
+        lines.append(f"・…ほか{len(hits) - cap}施設")
+    head = f"🐶 *{title}: <{src['url']}|{src['name']}>* 完売表示なしのペット可 {len(hits)}施設"
+    return head + (PET_NOTE if note else "") + ("\n" + "\n".join(lines) if lines else "")
+
+
+def daily_summary(sources_state, stamp, now, pets=None):
     """毎朝の現状まとめ。各ソースの最新状態から、買えそうなものを先に並べる。"""
     stays, cars, flights, failed = [], [], [], []
     for src in SOURCES:
@@ -255,6 +286,9 @@ def daily_summary(sources_state, stamp, now):
                 for u in sorted(UPCOMING, key=lambda u: u["at"]) if u["at"][:10] >= today]
     out = [f"*【九州ふっこう割ウォッチ】現状まとめ（{stamp}）*"]
     out.append("*🚗 宿の直接予約（県の参画施設一覧）*\n" + "\n".join(stays))
+    if pets:
+        dog = [pet_list(s, sources_state, pets, "ペット同伴可", cap=8, note=False) for s in SOURCES if s["kind"] == "staycsv"]
+        out.append("\n".join(dog) + "\n" + PET_NOTE)
     out.append("*予約サイト・旅行会社*\n" + "\n".join(cars))
     if upcoming:
         out.append("*日時が決まっている次の販売*\n" + "\n".join(upcoming))
@@ -295,7 +329,24 @@ def main():
     with ThreadPoolExecutor(max_workers=8) as ex:
         results = list(ex.map(run, SOURCES))
 
-    goods, air_goods, others, alerts, baselines, report = [], [], [], [], [], []
+    # 宿ごとのペット同伴可否（少しずつ調べて覚えておく。差分の印と毎朝のまとめに使う）
+    pets = saved.setdefault("pet", {})
+    targets = {}
+    for src, new, err in results:
+        if src["kind"] == "staycsv" and not err:
+            hp = new.pop("_hp")
+            targets.update({pet_key(src, n): (n, hp.get(n, "")) for n in new["facilities"]})
+    checked_sources = {s["id"] for s, n, e in results if s["kind"] == "staycsv" and not e}
+    for key in list(pets):
+        if key.split("|", 1)[0] in checked_sources and key not in targets:
+            del pets[key]
+    try:
+        pet_checked = pet.update(pets, targets, now.strftime("%Y-%m-%d"), fetch, decode, html_to_lines)
+    except Exception as e:  # noqa: BLE001 — ペット判定の失敗で空き監視を止めない
+        print(f"::warning::ペット判定に失敗: {type(e).__name__}: {e}")
+        pet_checked = 0
+
+    goods, dogs, air_goods, others, alerts, baselines, report = [], [], [], [], [], [], []
     for src, new, err in results:
         prev = sources_state.get(src["id"])
         link = f"<{src['url']}|{src['name']}>"
@@ -317,7 +368,9 @@ def main():
         if not prev or "state" not in prev:
             baselines.append(src["name"])
             continue
-        good, other = diff(src, prev["state"], new)
+        good, other, dog = diff(src, prev["state"], new, pets)
+        if dog:
+            dogs.append(f"*{link}*\n" + "\n".join(f"　🐶 {d}" for d in dog[:20]))
         if src.get("air") == "must":
             # 車で行く前提なので、航空券必須の予約先は変化を参考として載せるだけ（メンションしない）
             if good or other:
@@ -330,6 +383,8 @@ def main():
             others.append(f"*{link}*\n" + "\n".join(f"　{o}" for o in other[:15]) + more)
 
     parts = []
+    if dogs:
+        parts.append(f"🐶 *【九州ふっこう割ウォッチ】ペット同伴可の宿に空きの可能性（{stamp}）*\n" + "\n".join(dogs))
     if goods:
         parts.append(f"🟢 *【九州ふっこう割ウォッチ】空き・再開の可能性（{stamp}）*\n" + "\n".join(goods))
     if air_goods:
@@ -344,11 +399,21 @@ def main():
     elif baselines:
         parts.append(f"【九州ふっこう割ウォッチ】新しく監視に加えました: {', '.join(baselines)}")
 
+    done, dogs_done = saved.setdefault("pet_done", []), []
+    for src in SOURCES:
+        if src["id"] not in checked_sources or src["id"] in done:
+            continue
+        keys = [k for k in targets if k.startswith(src["id"] + "|")]
+        if keys and all(k in pets for k in keys):
+            done.append(src["id"])
+            dogs_done.append(pet_list(src, sources_state, pets, f"ペット同伴可の宿を調べ終えました（{stamp}）"))
+
+    parts[:0] = dogs_done
     today = now.strftime("%Y-%m-%d")
     saved.pop("last_heartbeat", None)  # 旧名（生存確認だけだった頃）
     if now.hour >= HEARTBEAT_HOUR and saved.get("last_summary") != today:
         saved["last_summary"] = today
-        parts.append(daily_summary(sources_state, stamp, now))
+        parts.append(daily_summary(sources_state, stamp, now, pets))
 
     if "--ping" in sys.argv and not parts:
         parts.append(f"【九州ふっこう割ウォッチ】テスト投稿（{stamp}）: Slack への通知が届いています。"
@@ -357,7 +422,7 @@ def main():
         # 検知（空き・変化・取得異常）とテスト投稿だけメンションを付けて、Slack の通知・バッジを鳴らす。
         # 開始・現状まとめは鳴らさない
         mention = os.environ.get("SLACK_MENTION", "").strip()
-        if mention and (goods or others or alerts or "--ping" in sys.argv):
+        if mention and (dogs or dogs_done or goods or others or alerts or "--ping" in sys.argv):
             parts[0] = f"{mention} {parts[0]}"
         post_slack("\n\n".join(parts), dry_run)
     else:
@@ -371,6 +436,7 @@ def main():
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
             f.write(f"## 巡回結果 {stamp}\n\n| ソース | 状態 |\n|---|---|\n" + "\n".join(report) + "\n")
+            f.write(f"\nペット判定: 今回 {pet_checked} 施設を調べた（判定済み {sum(1 for k in targets if k in pets)}/{len(targets)}）\n")
             if parts:
                 f.write("\n### 通知\n\n```\n" + "\n\n".join(parts) + "\n```\n")
 
