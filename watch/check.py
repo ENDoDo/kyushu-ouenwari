@@ -260,8 +260,12 @@ def pet_list(src, sources_state, pets, title, cap=15, note=True):
 
 
 def daily_summary(sources_state, stamp, now, pets=None):
-    """毎朝の現状まとめ。各ソースの最新状態から、買えそうなものを先に並べる。"""
-    stays, cars, flights, failed = [], [], [], []
+    """毎朝の現状まとめ。いま九州ふっこう割で申し込めそうなものだけを載せる。
+
+    車で行く前提なので、航空券必須の予約先と、受付中の表示がない予約先は載せない
+    （後者は名前を並べず件数だけ添える）。変化があれば差分の通知で別に知らせる。
+    """
+    stays, cars, closed, failed = [], [], 0, []
     for src in SOURCES:
         entry = sources_state.get(src["id"]) or {}
         st = entry.get("state")
@@ -280,28 +284,31 @@ def daily_summary(sources_state, stamp, now, pets=None):
                     line += "\n　　" + " / ".join(f"{n}: {'完売' if v == '完売' else '完売表示なし'}" for n, v in hits)
             stays.append(line)
             continue
+        if src.get("air") in (None, "must"):
+            continue  # 県公式・観光庁と航空券必須の予約先は、まとめに載せない
         if src["kind"] == "rakuten":
             live = {k: v for k, v in st.items() if k != "expired"}
-            text = ("受付中の枠あり（" + ", ".join(f"{k}×{v}" for k, v in sorted(live.items())) + "）") if live else "全枠終了"
-        elif src.get("air"):
-            ol = open_lines(st)
-            text = " / ".join(l[:80] for l in ol[:3]) if ol else "販売中の表示なし"
+            text = ("受付中の枠あり（" + ", ".join(f"{k}×{v}" for k, v in sorted(live.items())) + "）") if live else None
         else:
-            continue  # 県公式・観光庁は変化があったときだけ載せる
-        (flights if src.get("air") == "must" else cars).append(f"・{link}［{AIR_LABEL[src['air']]}］: {text}")
+            ol = open_lines(st)
+            text = " / ".join(l[:80] for l in ol[:3]) if ol else None
+        if text is None:
+            closed += 1
+            continue
+        cars.append(f"・{link}［{AIR_LABEL[src['air']]}］: {text}")
 
     today = now.strftime("%Y-%m-%d")
     upcoming = [f"・{u['at'][5:].replace('-', '/').replace(' 00:00', '')} {u['name']}［{AIR_LABEL[u['air']]}］"
-                for u in sorted(UPCOMING, key=lambda u: u["at"]) if u["at"][:10] >= today]
+                for u in sorted(UPCOMING, key=lambda u: u["at"]) if u["at"][:10] >= today and u["air"] != "must"]
     out = [f"*【九州ふっこう割ウォッチ】現状まとめ（{stamp}）*"]
     out.append("*🚗 宿の直接予約（県の参画施設一覧）*\n" + "\n".join(stays))
     if pets:
         dog = [pet_list(s, sources_state, pets, "ペット同伴可", cap=8, note=False) for s in SOURCES if s["kind"] == "staycsv"]
         out.append("\n".join(dog) + "\n" + PET_NOTE)
-    out.append("*予約サイト・旅行会社*\n" + "\n".join(cars))
+    rest = f"ほか{closed}サイトは受付中の表示なし" if closed else ""
+    out.append("*予約サイト・旅行会社（受付中の表示があるもの）*\n" + ("\n".join(cars) + ("\n" + rest if rest else "") if cars else rest or "なし"))
     if upcoming:
         out.append("*日時が決まっている次の販売*\n" + "\n".join(upcoming))
-    out.append("*【参考】航空券必須*\n" + "\n".join(flights))
     out.append(f"{len(SOURCES)}ソースを10分ごとに巡回中" + (f"。取得失敗: {', '.join(failed)}" if failed else "。すべて取得できています") + "。")
     return "\n\n".join(out)
 
