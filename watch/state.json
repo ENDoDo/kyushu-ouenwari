@@ -1,5 +1,458 @@
 {
  "last_summary": "2026-10-19",
+ "pet": {
+  "stay-fukuoka|58 Beach House": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|9HOTEL HAKATA": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|9HOTEL TENJIN": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|ABホテル行橋": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|AIRSTAR The Apartment 博多祇園": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|AIRSTAR The Apartment 博多駅南": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|ALFACIO RESORT STAY ITOSHIMA": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "ALFACIOcn】をご利用頂けます。 ペット同伴 a]:text-link [&>a]:"
+  },
+  "stay-fukuoka|ALFACIO RIVERSIDE STAY HAKATA": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|ALPHABED INN 博多駅前": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|ALPHABED INN 福岡大濠公園": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|ANAクラウンプラザホテル福岡": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|AO太宰府": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "取得できない: URLError"
+  },
+  "stay-fukuoka|Advanced Stay Hakata": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Airport Terrace 1棟2階建て貸切ヴィラ（大型バルコニー・ サウナ・駐車場・屋内BBQ）": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Airstar Haruyoshi|キューブ春吉パティオ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Airstar Tenjin Kego|パインヒル警固": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Akasaka-Sun Hotel A棟": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Akasaka-Sun Hotel B棟": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Alba HOTEL & Glamping": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Alphabed博多コンフォート": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Art inn DAZAIFU": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|BASE LAYER HOTEL福岡": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|BEB5門司港 by 星野リゾート": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|BUENA VISTA OHORI PARK": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|BUNSHODO HOTEL": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Beach Side Resort Hotel そらすな": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "ンビューバス・サウナルーム、暖炉ルーム、愛犬ステイルームの5つのタイプからお選びいた"
+  },
+  "stay-fukuoka|Boxi Hakata 1": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|CANAL NESTO": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|CODE ROOMS ITOSHIMA": {
+   "at": "2026-10-19",
+   "pet": "不可",
+   "why": "人と同額。未就学児のお子様は無料です。 ペット、ご宿泊者以外の入室不可です。ご了承くださいませ。 チェックイン"
+  },
+  "stay-fukuoka|COOL HAKATA別邸": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|CREST 西新": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Chill out FUKUOKA": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Code Rooms Imaizumi": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Cozy Nest Shiobaru": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Craft Inn 手": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Cross Stage": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Crystal & Resort Exclusive": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Crystal & Resort Fukuoka": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Crystal & Resort The Grand Win": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Crystal & Resort The Grand Win (2)": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Crystal & Resort The Marina bay": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Crystal ＆Resort Exclusive": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|DEL style 福岡西中洲": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Danran HAKATA": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|DelightStay黒崎駅前": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|EIWA PLACE HOTEL HAKATA": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|ELIF Hakata": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|ELIF Yoshizuka": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Emorela": {
+   "at": "2026-10-19",
+   "pet": "不可",
+   "why": "ですか？ 大変申し訳ございませんが、現在ペットとのご宿泊はお断りしております。アレルギーをお持ちのお客様"
+  },
+  "stay-fukuoka|Epoch inn Nakasu": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|FFFFFF HOTEL": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|FUKUOKA門司港ステイ": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Fam Hotel Imaizumi": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Felice Hakata": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Flat Dazaifu": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Flower Base AJISAI": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base Ayame": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base Botan": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base Fuji": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base HIMAWARI": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base KIKU": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base Lily House": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base SAKURA": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base SUISEN": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base SUMIRE": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base SUMIRE1": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base SUZURAN": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Flower Base TSUBAKI": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Fukuoka Condominium": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Fukuoka Condominium (2)": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Fukuoka Condominium EAST": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Fukuoka Guesthouse CAMP": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Fukuoka Guesthouse HIVE": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Fukuoka Guesthouse SHIP": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": ""
+  },
+  "stay-fukuoka|Fukuoka Hana Hostel": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Fukuoka Single Room": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Giraffe Nakasu 白": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Giraffe tenjin 常": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Grand Prime HAKATA HOTEL": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|Grand STAY博多西中洲": {
+   "at": "2026-10-19",
+   "pet": "不明",
+   "why": "公式サイトなし"
+  },
+  "stay-fukuoka|LuxurySweet East71（最大7人、ペット可、箱崎宮前駅徒歩3分・新築）": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: rySweet East71（最大7人、ペット可、箱崎宮前駅徒歩3分・新築）"
+  },
+  "stay-fukuoka|New Premium Sweet Hakata6A（駅から徒歩30秒、ペットOK、絶好のロケーション）": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: t Hakata6A（駅から徒歩30秒、ペットOK、絶好のロケーション）"
+  },
+  "stay-fukuoka|New Premium Sweet Hakata6B（駅横徒歩30秒 ペット可 好立地 90㎡）": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: et Hakata6B（駅横徒歩30秒 ペット可 好立地 90㎡）"
+  },
+  "stay-fukuoka|New！LS3 屋上庭園付オーナーズルーム（福岡空港付近・駐車場2台・露天風呂・サウナ・ペット可）": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: 空港付近・駐車場2台・露天風呂・サウナ・ペット可）"
+  },
+  "stay-fukuoka|四季の庵 糸島 （大自然のパノラマ露天風呂、駐車場5台以上、サウナ、専用BBQ施設ペット可）": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: 、駐車場5台以上、サウナ、専用BBQ施設ペット可）"
+  },
+  "stay-fukuoka|愛犬と貸切サウナヴィラ糸島／ALL LIFE resort ITOSHIMA": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: 愛犬と貸切サウナヴィラ糸島／ALL LIFE"
+  },
+  "stay-kagoshima|ペットと泊まれる宿どりあん": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: ペットと泊まれる宿どりあん"
+  },
+  "stay-kagoshima|大人数で泊まれる一棟貸し㐂瀬 ペット可": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: 大人数で泊まれる一棟貸し㐂瀬 ペット可"
+  },
+  "stay-kagoshima|癒しの館「つわんこ」": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: 癒しの館「つわんこ」"
+  },
+  "stay-oita|湯布院ガーデンホテル ドッグラン&リゾート": {
+   "at": "2026-10-19",
+   "pet": "可",
+   "why": "施設名: 湯布院ガーデンホテル ドッグラン&リゾート"
+  }
+ },
+ "pet_done": [],
  "sources": {
   "airtrip": {
    "errors": 0,
