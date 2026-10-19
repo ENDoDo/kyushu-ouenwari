@@ -1,0 +1,13 @@
+name: probe-pet
+on:
+  push:
+    branches: [claude/project-thread-36x6ju]
+    paths: [.github/workflows/probe-pet.yml, watch/probe_pet.py]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python watch/probe_pet.py
