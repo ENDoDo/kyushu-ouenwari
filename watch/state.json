@@ -13358,8 +13358,7 @@
    ]
   },
   "pref-miyazaki": {
-   "errors": 29,
-   "last_error": "URLError: <urlopen error timed out>",
+   "errors": 0,
    "state": [
     "【予約開始時期】",
     "予算の上限に達し次第、キャンペーンは終了いたします。あらかじめご了承ください。",
