@@ -13357,7 +13357,7 @@
    ]
   },
   "pref-miyazaki": {
-   "errors": 5,
+   "errors": 6,
    "last_error": "URLError: <urlopen error timed out>",
    "state": [
     "【予約開始時期】",
