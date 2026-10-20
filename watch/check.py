@@ -389,6 +389,10 @@ def main():
         if not prev or "state" not in prev:
             baselines.append(src["name"])
             continue
+        if src["kind"] == "staycsv":
+            # 宿の直接予約は「完売表示なし」でも実際に空いているかは宿に聞かないと分からないので、
+            # 宿ごとの変化は通知しない（件数は毎朝のまとめに載せる）
+            continue
         good, other, dog = diff(src, prev["state"], new, pets, urls)
         if dog:
             dogs.append(f"*{link}*\n" + "\n".join(f"　🐶 {d}" for d in dog[:20]))
