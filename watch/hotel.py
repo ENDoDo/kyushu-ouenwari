@@ -68,7 +68,12 @@ def get(op, url, data=None, headers=None, timeout=40):
     if not cs:
         m = re.search(rb'charset=["\']?([\w-]+)', body[:4000], re.I)
         cs = m.group(1).decode() if m else "utf-8"
-    return body.decode(cs, "replace")
+    # じゃらんは Shift_JIS 系を windows-31j と名乗るが、Python はこの名前を知らない
+    cs = {"windows-31j": "cp932", "shift_jis": "cp932", "x-sjis": "cp932"}.get(cs.lower(), cs)
+    try:
+        return body.decode(cs, "replace")
+    except LookupError:
+        return body.decode("utf-8", "replace")
 
 
 def text(fragment):
@@ -248,6 +253,9 @@ def deals(prev, plans):
     """即時に知らせる「良い割引」。prev は前回の state（初回は None）。"""
     if not prev:
         return []
+    # 前回までに1度も取れていなかったサイトは、今回が基準づくり（取得失敗からの復旧で誤検知しない）
+    known = {k.split("|", 1)[0] for k in prev.get("plans", {})}
+    plans = {k: o for k, o in plans.items() if o["site"] in known}
     out, told = [], set()
     lows = prev.get("lowest", {})
     for mt, o in meal_mins(plans).items():
