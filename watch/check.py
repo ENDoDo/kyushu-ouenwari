@@ -22,6 +22,7 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(__file__))
+import hotel  # noqa: E402
 import pet  # noqa: E402
 from sources import FOCUS_STAYS, SOURCES, UPCOMING  # noqa: E402
 
@@ -434,11 +435,29 @@ def main():
             dogs_done.append(pet_list(src, sources_state, pets, f"ペット同伴可の宿を調べ終えました（{stamp}）"))
 
     parts[:0] = dogs_done
+
+    # 1軒の宿の料金（予約サイト横断）。良い割引は即時、全体は毎朝のまとめに添える
+    hotel_first = not (saved.get("hotel") or {}).get("best")
+    try:
+        hotel_alerts, _ = hotel.run(saved, now)
+    except Exception as e:  # noqa: BLE001 — 料金監視の失敗で空き監視を止めない
+        print(f"::warning::料金監視に失敗: {type(e).__name__}: {e}")
+        hotel_alerts = []
+    if hotel_alerts:
+        h = hotel.HOTEL
+        parts.append(f"💰 *【{h['name']}】{h['checkin'].month}/{h['checkin'].day}〜{h['nights']}泊の良い割引（{stamp}）*\n"
+                     + "\n".join(f"・{a}" for a in hotel_alerts))
+    if hotel_first and (saved.get("hotel") or {}).get("best"):
+        parts.append("料金の監視を始めました。以後は良い割引が出たら即時に、毎朝8時台にまとめを投稿します。\n"
+                     + hotel.summary(saved["hotel"], stamp))
     today = now.strftime("%Y-%m-%d")
     saved.pop("last_heartbeat", None)  # 旧名（生存確認だけだった頃）
     if now.hour >= HEARTBEAT_HOUR and saved.get("last_summary") != today:
         saved["last_summary"] = today
         parts.append(daily_summary(sources_state, stamp, now, pets))
+        hs = saved.get("hotel") or {}
+        if hs.get("best") and now.date() < hotel.HOTEL["checkin"] and not hotel_first:
+            parts.append(hotel.summary(hs, stamp))
 
     if "--ping" in sys.argv and not parts:
         parts.append(f"【九州ふっこう割ウォッチ】テスト投稿（{stamp}）: Slack への通知が届いています。"
@@ -447,7 +466,7 @@ def main():
         # 検知（空き・変化・取得異常）とテスト投稿だけメンションを付けて、Slack の通知・バッジを鳴らす。
         # 開始・現状まとめは鳴らさない
         mention = os.environ.get("SLACK_MENTION", "").strip()
-        if mention and (dogs or dogs_done or goods or others or alerts or "--ping" in sys.argv):
+        if mention and (dogs or dogs_done or goods or others or alerts or hotel_alerts or "--ping" in sys.argv):
             parts[0] = f"{mention} {parts[0]}"
         post_slack("\n\n".join(parts), dry_run)
     else:
