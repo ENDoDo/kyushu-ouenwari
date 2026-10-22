@@ -103,7 +103,7 @@
     "total": 25920
    }
   },
-  "checked_at": "2026-10-23T02:23:24+09:00",
+  "checked_at": "2026-10-23T02:54:14+09:00",
   "counts": {
    "ikyu": 3,
    "jalan": 4,
@@ -125,11 +125,12 @@
    "ikyu": 0,
    "jalan": 0,
    "official": 0,
-   "rakuten": 0,
+   "rakuten": 1,
    "yahoo": 0
   },
   "last_error": {
-   "jalan": "LookupError: unknown encoding: windows-31j"
+   "jalan": "LookupError: unknown encoding: windows-31j",
+   "rakuten": "HTTPError: HTTP Error 503: Service Unavailable"
   },
   "lowest": {
    "2食付": 28148,
@@ -13658,13 +13659,15 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 0,
+   "errors": 1,
+   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 9
    }
   },
   "rakuten-kagoshima": {
-   "errors": 0,
+   "errors": 1,
+   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": [
     "[鹿児島] 終了しました",
     "[鹿児島] 先着利用上限に達しました",
@@ -13680,32 +13683,35 @@
    ]
   },
   "rakuten-kumamoto": {
-   "errors": 0,
-   "state": {
-    "expired": 5
-   }
-  },
-  "rakuten-miyazaki": {
-   "errors": 0,
-   "state": {
-    "expired": 4
-   }
-  },
-  "rakuten-nagasaki": {
-   "errors": 0,
-   "state": {
-    "expired": 5
-   }
-  },
-  "rakuten-oita": {
    "errors": 1,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
-  "rakuten-saga": {
+  "rakuten-miyazaki": {
    "errors": 1,
+   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "state": {
+    "expired": 4
+   }
+  },
+  "rakuten-nagasaki": {
+   "errors": 1,
+   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "state": {
+    "expired": 5
+   }
+  },
+  "rakuten-oita": {
+   "errors": 2,
+   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "state": {
+    "expired": 5
+   }
+  },
+  "rakuten-saga": {
+   "errors": 2,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
