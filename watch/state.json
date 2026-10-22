@@ -13698,13 +13698,15 @@
    }
   },
   "rakuten-oita": {
-   "errors": 0,
+   "errors": 1,
+   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-saga": {
-   "errors": 0,
+   "errors": 1,
+   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
