@@ -103,7 +103,7 @@
     "total": 25920
    }
   },
-  "checked_at": "2026-10-23T07:32:29+09:00",
+  "checked_at": "2026-10-23T08:03:18+09:00",
   "counts": {
    "ikyu": 3,
    "jalan": 4,
@@ -125,7 +125,7 @@
    "ikyu": 0,
    "jalan": 0,
    "official": 0,
-   "rakuten": 10,
+   "rakuten": 11,
    "yahoo": 0
   },
   "last_error": {
@@ -173,7 +173,7 @@
    "yahoo|【部屋食BBQ】ワンちゃんと一緒にお泊まり！お部屋食BBQ＆ドッグランを楽しもう"
   ]
  },
- "last_summary": "2026-10-22",
+ "last_summary": "2026-10-23",
  "pet": {
   "stay-fukuoka|58 Beach House": {
    "at": "2026-10-19",
@@ -13659,14 +13659,14 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 31,
+   "errors": 32,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 9
    }
   },
   "rakuten-kagoshima": {
-   "errors": 31,
+   "errors": 32,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": [
     "[鹿児島] 終了しました",
@@ -13683,35 +13683,35 @@
    ]
   },
   "rakuten-kumamoto": {
-   "errors": 31,
+   "errors": 32,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-miyazaki": {
-   "errors": 31,
+   "errors": 32,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 4
    }
   },
   "rakuten-nagasaki": {
-   "errors": 31,
+   "errors": 32,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-oita": {
-   "errors": 32,
+   "errors": 33,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-saga": {
-   "errors": 32,
+   "errors": 33,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
