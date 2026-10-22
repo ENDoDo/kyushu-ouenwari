@@ -456,7 +456,7 @@ def main():
         saved["last_summary"] = today
         parts.append(daily_summary(sources_state, stamp, now, pets))
         hs = saved.get("hotel") or {}
-        if hs.get("best") and now.date() < hotel.HOTEL["checkin"]:
+        if hs.get("best") and now.date() < hotel.HOTEL["checkin"] and not hotel_first:
             parts.append(hotel.summary(hs, stamp))
 
     if "--ping" in sys.argv and not parts:
