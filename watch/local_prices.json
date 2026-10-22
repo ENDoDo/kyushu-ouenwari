@@ -1,0 +1,73 @@
+{
+ "fetched_at": "2026-10-22T15:22:27+09:00",
+ "sites": {
+  "yahoo": [
+   {
+    "plan": "【ワンちゃんと一緒にお泊まり！】＜朝食付＞天然温泉やアクティビティを満喫！気ままにゆっくり旅",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "朝食付",
+    "total": 25920,
+    "coupon": 0,
+    "points": 0,
+    "regular": 32000,
+    "left": 3
+   },
+   {
+    "plan": "【部屋食BBQ】ワンちゃんと一緒にお泊まり！お部屋食BBQ＆ドッグランを楽しもう",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "2食付",
+    "total": 33696,
+    "coupon": 0,
+    "points": 0,
+    "regular": 41600,
+    "left": 3
+   },
+   {
+    "plan": "【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "2食付",
+    "total": 39042,
+    "coupon": 0,
+    "points": 0,
+    "regular": 48200,
+    "left": 3
+   }
+  ],
+  "ikyu": [
+   {
+    "plan": "【ワンちゃんと一緒にお泊まり！】＜朝食付＞天然温泉やアクティビティを満喫！気ままにゆっくり旅",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "朝食付",
+    "total": 25920,
+    "coupon": 0,
+    "points": 0,
+    "regular": 32000,
+    "left": 3
+   },
+   {
+    "plan": "【部屋食BBQ】ワンちゃんと一緒にお泊まり！お部屋食BBQ＆ドッグランを楽しもう",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "2食付",
+    "total": 33696,
+    "coupon": 0,
+    "points": 0,
+    "regular": 41600,
+    "left": 3
+   },
+   {
+    "plan": "【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "2食付",
+    "total": 39042,
+    "coupon": 0,
+    "points": 0,
+    "regular": 48200,
+    "left": 3
+   }
+  ]
+ },
+ "errors": {
+  "yahoo": null,
+  "ikyu": null
+ }
+}
