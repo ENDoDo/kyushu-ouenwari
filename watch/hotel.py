@@ -13,6 +13,7 @@ import datetime as dt
 import html
 import http.cookiejar
 import json
+import os
 import re
 import time
 import urllib.parse
@@ -42,7 +43,13 @@ DROP_YEN = 1000   # 食事タイプ別の「実質」最安が、これまでの
 DROP_PCT = 10     # 同じプランの「実質」が前回からこの%以上下がったら
 SALE_RE = re.compile(r"セール|SALE|タイムセール|特価|割引|OFF|早割|応援割|ふっこう|復興|クーポン|限定価格")
 
-SITE_NAME = {"official": "公式HP", "jalan": "じゃらん", "rakuten": "楽天トラベル"}
+SITE_NAME = {"official": "公式HP", "jalan": "じゃらん", "rakuten": "楽天トラベル",
+             "yahoo": "Yahoo!トラベル", "ikyu": "一休.com"}
+
+# Yahoo!トラベル・一休はクラウドの IP を丸ごと拒否する（ヘッドレス Chrome でも 403）。
+# 持ち主の Mac（家庭回線）が launchd で1日3回取得して watch/local_prices.json にコミットするので、それを読む
+LOCAL_PATH = os.path.join(os.path.dirname(__file__), "local_prices.json")
+LOCAL_STALE_H = 26  # これより古ければ Mac 側が止まっているとみなして取得失敗に数える
 MEALS = ["素泊まり", "朝食付", "夕食付", "2食付"]
 
 
@@ -126,6 +133,10 @@ def search_url(site, h=HOTEL):
                                     "f_heya_su": 1, "f_otona_su": h["adults"], "f_s1": 0, "f_s2": 0,
                                     "f_y1": 0, "f_y2": 0, "f_y3": 0, "f_y4": 0, "f_flg": "PLAN"})
         return f"https://hotel.travel.rakuten.co.jp/hotelinfo/plan/{h['rakuten']}?{q}"
+    if site == "yahoo":
+        return f"https://travel.yahoo.co.jp/00002017/plan/?cid={ci:%Y%m%d}&lc={h['nights']}&ppc={h['adults']}&rc=1"
+    if site == "ikyu":
+        return f"https://www.ikyu.com/00002017/?cid={ci:%Y%m%d}&lc={h['nights']}&ppc={h['adults']}&rc=1"
     raise KeyError(site)
 
 
@@ -201,6 +212,30 @@ def fetch_rakuten(h=HOTEL, max_pages=6):
 
 
 FETCHERS = {"official": fetch_official, "jalan": fetch_jalan, "rakuten": fetch_rakuten}
+
+
+def load_local(now, path=None):
+    """Mac が書いた local_prices.json を {site: offers のリスト または 例外} で返す。ファイルが無ければ空。"""
+    try:
+        with open(path or LOCAL_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        return {}
+    age = now - dt.datetime.fromisoformat(data["fetched_at"])
+    out = {}
+    for site, rows in (data.get("sites") or {}).items():
+        err = (data.get("errors") or {}).get(site)
+        if site not in SITE_NAME:
+            continue
+        if err:
+            out[site] = RuntimeError(f"Mac 側の取得で失敗: {err}")
+        elif age > dt.timedelta(hours=LOCAL_STALE_H):
+            out[site] = RuntimeError(f"Mac 側の取得が {age.total_seconds() / 3600:.0f} 時間止まっている")
+        else:
+            out[site] = [offer(site, r["plan"], r.get("room", ""), int(r["total"]), r.get("meal") or meal(r["plan"]),
+                               coupon=r.get("coupon"), points=r.get("points"), regular=r.get("regular"),
+                               left=r.get("left")) for r in rows]
+    return out
 
 
 def wanted(offers, h=HOTEL):
@@ -333,6 +368,19 @@ def run(saved, now, force=False):
         except Exception as e:  # noqa: BLE001 — 1サイトの失敗で全体を止めない
             errors[site] = errors.get(site, 0) + 1
             st.setdefault("last_error", {})[site] = f"{type(e).__name__}: {e}"[:200]
+    try:
+        local = load_local(now)
+    except Exception as e:  # noqa: BLE001 — 壊れたファイルで全体を止めない
+        local = {s: e for s in ("yahoo", "ikyu")}
+    for site, got in local.items():
+        if isinstance(got, Exception):
+            errors[site] = errors.get(site, 0) + 1
+            st.setdefault("last_error", {})[site] = f"{type(got).__name__}: {got}"[:200]
+            continue
+        mine = wanted(got)  # 空でもよい（犬連れプランの空室なし）
+        offers += mine
+        st.setdefault("counts", {})[site] = len(mine)
+        errors[site] = 0
     plans = plan_mins(offers)
     ok_sites = {s for s, n in errors.items() if n == 0}
     prev = st.get("plans") and st
