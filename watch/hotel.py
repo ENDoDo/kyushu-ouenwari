@@ -232,13 +232,10 @@ def describe(o, link=True):
     s = fmt_yen(o["total"])
     if o.get("regular"):
         s += f"（通常{fmt_yen(o['regular'])}から{round(100 - o['total'] * 100 / o['regular'])}%OFF）"
-    minus = []
     if o["coupon"]:
-        minus.append(f"クーポン−{fmt_yen(o['coupon'])}")
+        s += f" → クーポン{fmt_yen(o['coupon'])}引きで支払い{fmt_yen(o['total'] - o['coupon'])}"
     if o["points"]:
-        minus.append(f"ポイント{o['points']:,}")
-    if minus:
-        s += f" → {'・'.join(minus)}で実質{fmt_yen(o['eff'])}"
+        s += f"（＋ポイント{o['points']:,}還元で実質{fmt_yen(o['eff'])}）"
     name = SITE_NAME[o["site"]]
     if link:
         name = f"<{search_url(o['site'])}|{name}>"
@@ -280,15 +277,20 @@ def summary(state, stamp):
     ci = h["checkin"]
     party = h.get("party") or f"大人{h['adults']}名"
     head = (f"*🏝️ 【{h['name']}】{ci.month}/{ci.day}〜{h['nights']}泊・{party}の料金まとめ（{stamp}）*\n"
-            "ペット同伴プランのみ（犬の料金は別途・現地払い）。合計は1室あたり税込。実質＝クーポン・ポイントを差し引いた目安（クーポンは先着・条件ありのことがある）")
+            "ペット同伴プランのみ（犬の料金は別途・現地払い）。料金は1室あたり税込。"
+            "実質＝支払い額からさらに還元ポイントを引いた目安（クーポンは先着で事前の獲得が要る）")
     lines = []
     for mt in MEALS:
         rows = sorted((o for o in state["best"].values() if o["meal"] == mt), key=lambda o: o["eff"])
         if rows:
             lines.append(f"*{mt}*\n" + "\n".join(f"・{describe(o)}" for o in rows))
-    lows = state.get("lowest", {})
-    if lows:
-        lines.append("これまでの最安（実質）: " + " / ".join(f"{mt} {fmt_yen(lows[mt])}" for mt in MEALS if mt in lows))
+    # 監視を始めてからの最安は、いまの最安より安かったときだけ載せる（同じなら上の一覧で分かる）
+    lows, at = state.get("lowest", {}), state.get("lowest_at", {})
+    now_min = meal_mins({k: v for k, v in state["best"].items()})
+    past = [f"{mt} 実質{fmt_yen(lows[mt])}（{at.get(mt, '')}）" for mt in MEALS
+            if mt in lows and mt in now_min and lows[mt] < now_min[mt]["eff"]]
+    if past:
+        lines.append("監視を始めてからの最安（いまはこれより高い）: " + " / ".join(past))
     cps = state.get("coupons_now") or []
     if cps:
         lines.append("いま出ているクーポン: " + " / ".join(cps[:6]))
@@ -338,8 +340,11 @@ def run(saved, now, force=False):
             best[f"{site}|{mt}"] = o
     st["best"] = best
     lows = st.setdefault("lowest", {})
+    lows_at = st.setdefault("lowest_at", {})
     for mt, o in meal_mins(plans).items():
-        lows[mt] = min(lows.get(mt, o["eff"]), o["eff"])
+        if mt not in lows or o["eff"] < lows[mt]:
+            lows[mt] = o["eff"]
+            lows_at[mt] = f"{now.month}/{now.day} {SITE_NAME[o['site']]}"
     now_cp = sorted({c for o in plans.values() for c in o.get("coupons", [])})
     st["coupons_now"] = now_cp
     st["coupons"] = sorted(set(st.get("coupons", [])) | set(now_cp))
