@@ -1,4 +1,65 @@
 {
+ "hotel": {
+  "best": {
+   "rakuten|2食付": {
+    "coupon": 0,
+    "eff": 37100,
+    "left": 3,
+    "meal": "2食付",
+    "plan": "【楽天月末セール】部屋食BBQ／ワンちゃんと一緒にお泊まり！ドッグランを楽しもう",
+    "points": 340,
+    "room": "【１名〜４名様】BARK LODGE【１〜２F】",
+    "site": "rakuten",
+    "total": 37440
+   },
+   "rakuten|朝食付": {
+    "coupon": 0,
+    "eff": 31710,
+    "left": 3,
+    "meal": "朝食付",
+    "plan": "【ワンちゃんと一緒】◆朝食付き◆天然温泉やアクティビティを満喫！気ままにゆったり癒し旅♪",
+    "points": 290,
+    "room": "【１名〜４名様】BARK LODGE【１〜２F】",
+    "site": "rakuten",
+    "total": 32000
+   }
+  },
+  "checked_at": "2026-10-22T13:04:57+09:00",
+  "counts": {
+   "official": 0,
+   "rakuten": 4
+  },
+  "coupons": [],
+  "coupons_now": [],
+  "errors": {
+   "jalan": 1,
+   "official": 0,
+   "rakuten": 0
+  },
+  "last_error": {
+   "jalan": "LookupError: unknown encoding: windows-31j"
+  },
+  "lowest": {
+   "2食付": 37100,
+   "朝食付": 31710
+  },
+  "lowest_at": {
+   "2食付": "10/22 楽天トラベル",
+   "朝食付": "10/22 楽天トラベル"
+  },
+  "plans": {
+   "rakuten|【ワンちゃんと一緒】◆朝食付き◆天然温泉やアクティビティを満喫！気ままにゆったり癒し旅♪": 31710,
+   "rakuten|【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ": 47762,
+   "rakuten|【楽天月末セール】部屋食BBQ／ワンちゃんと一緒にお泊まり！ドッグランを楽しもう": 37100,
+   "rakuten|【部屋食BBQ】ワンちゃんとお泊まり！お部屋でBBQ＆ドッグランを楽しもう！": 41222
+  },
+  "seen": [
+   "rakuten|【ワンちゃんと一緒】◆朝食付き◆天然温泉やアクティビティを満喫！気ままにゆったり癒し旅♪",
+   "rakuten|【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ",
+   "rakuten|【楽天月末セール】部屋食BBQ／ワンちゃんと一緒にお泊まり！ドッグランを楽しもう",
+   "rakuten|【部屋食BBQ】ワンちゃんとお泊まり！お部屋でBBQ＆ドッグランを楽しもう！"
+  ]
+ },
  "last_summary": "2026-10-22",
  "pet": {
   "stay-fukuoka|58 Beach House": {
