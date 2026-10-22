@@ -7441,6 +7441,30 @@
    "url": "http://www.syumine.com",
    "why": ""
   },
+  "stay-kagoshima|宿OSHIKIRI 01": {
+   "at": "2026-10-22",
+   "pet": "不明",
+   "url": "https://hpdsp.jp/yado-oshikiri/",
+   "why": ""
+  },
+  "stay-kagoshima|宿OSHIKIRI 02": {
+   "at": "2026-10-22",
+   "pet": "不明",
+   "url": "https://hpdsp.jp/yado-oshikiri/",
+   "why": ""
+  },
+  "stay-kagoshima|宿OSHIKIRI 04": {
+   "at": "2026-10-22",
+   "pet": "不明",
+   "url": "https://hpdsp.jp/yado-oshikiri/",
+   "why": ""
+  },
+  "stay-kagoshima|宿OSHIKIRI MID": {
+   "at": "2026-10-22",
+   "pet": "不明",
+   "url": "https://hpdsp.jp/yado-oshikiri/",
+   "why": ""
+  },
   "stay-kagoshima|富屋旅館": {
    "at": "2026-10-19",
    "pet": "不明",
@@ -13508,7 +13532,8 @@
    }
   },
   "rurubu": {
-   "errors": 0,
+   "errors": 1,
+   "last_error": "ValueError: 状況を表す行が1つも取れない（ページの作りが変わった可能性）",
    "state": [
     "[熊本ふっこう応援割の受付を開始しました] 県ごとに予約開始日・割引対象期間が設定されています。",
     "[【福岡県・佐賀県・長崎県・大分県・宮崎県】] 県ごとに、予約開始時期・期間が設定されます。 県別制度詳細 をご確認ください。",
@@ -14411,7 +14436,7 @@
   "stay-kagoshima": {
    "errors": 0,
    "state": {
-    "csv": "kagoshima_stay_search_261021_1633.csv",
+    "csv": "kagoshima_stay_search_261022_1150.csv",
     "facilities": {
      "14hikari coffee inn": "掲載中",
      "47ハウス": "掲載中",
@@ -14781,10 +14806,14 @@
      "妙見楽園荘": "完売",
      "妙見温泉 天けい荘": "完売",
      "妙見温泉ねむ": "完売",
-     "妙見石原荘": "掲載中",
+     "妙見石原荘": "完売",
      "子供部屋のある一棟貸し奄宿り": "掲載中",
      "安房やまざくらの宿": "掲載中",
      "安楽温泉朱峰": "完売",
+     "宿OSHIKIRI 01": "掲載中",
+     "宿OSHIKIRI 02": "掲載中",
+     "宿OSHIKIRI 04": "掲載中",
+     "宿OSHIKIRI MID": "掲載中",
      "富屋旅館": "掲載中",
      "屋久の宿たぐち": "完売",
      "屋久島 コテージ 森のこかげ": "掲載中",
