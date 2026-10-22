@@ -26,6 +26,10 @@ HOTEL = {
     "checkin": dt.date(2026, 12, 6),
     "nights": 1,
     "adults": 2,
+    # 犬（ポメラニアン1匹）連れなので、ペット同伴のプランだけを見る（プラン名＋部屋名で照合）。
+    # 施設のグランピング（GRAX）はペット不可で、犬と泊まれるのはドッグラン付きの BARK LODGE だけ
+    "plan_filter": r"ワンちゃん|愛犬|ペット|BARK",
+    "party": "大人2名・犬1匹",
     # 予約サイトごとの施設ID
     "official": "islandnagasaki",  # reserve.489ban.net/client/<ここ>/0/
     "jalan": "319516",             # www.jalan.net/yad<ここ>/
@@ -194,6 +198,11 @@ def fetch_rakuten(h=HOTEL, max_pages=6):
 FETCHERS = {"official": fetch_official, "jalan": fetch_jalan, "rakuten": fetch_rakuten}
 
 
+def wanted(offers, h=HOTEL):
+    pat = h.get("plan_filter")
+    return [o for o in offers if not pat or re.search(pat, f"{o['plan']} {o['room']}")]
+
+
 # ---------------------------------------------------------------- 比べる
 
 def plan_mins(offers):
@@ -269,8 +278,9 @@ def deals(prev, plans):
 def summary(state, stamp):
     h = HOTEL
     ci = h["checkin"]
-    head = (f"*🏝️ 【{h['name']}】{ci.month}/{ci.day}〜{h['nights']}泊・大人{h['adults']}名の料金まとめ（{stamp}）*\n"
-            "合計は1室あたり税込。実質＝クーポン・ポイントを差し引いた目安（クーポンは先着・条件ありのことがある）")
+    party = h.get("party") or f"大人{h['adults']}名"
+    head = (f"*🏝️ 【{h['name']}】{ci.month}/{ci.day}〜{h['nights']}泊・{party}の料金まとめ（{stamp}）*\n"
+            "ペット同伴プランのみ（犬の料金は別途・現地払い）。合計は1室あたり税込。実質＝クーポン・ポイントを差し引いた目安（クーポンは先着・条件ありのことがある）")
     lines = []
     for mt in MEALS:
         rows = sorted((o for o in state["best"].values() if o["meal"] == mt), key=lambda o: o["eff"])
@@ -282,6 +292,9 @@ def summary(state, stamp):
     cps = state.get("coupons_now") or []
     if cps:
         lines.append("いま出ているクーポン: " + " / ".join(cps[:6]))
+    none = [SITE_NAME[s] for s, n in state.get("counts", {}).items() if n == 0 and not state["errors"].get(s)]
+    if none:
+        lines.append("対象プランの空室なし: " + ", ".join(none))
     errs = [SITE_NAME[s] for s, n in state.get("errors", {}).items() if n]
     if errs:
         lines.append("取得できなかったサイト: " + ", ".join(errs))
@@ -303,13 +316,15 @@ def run(saved, now, force=False):
             got = fn()
             if not got:
                 raise ValueError("プランが1件も取れない（ページの作りが変わったか満室）")
-            offers += got
+            mine = wanted(got)
+            offers += mine
+            st.setdefault("counts", {})[site] = len(mine)
             errors[site] = 0
         except Exception as e:  # noqa: BLE001 — 1サイトの失敗で全体を止めない
             errors[site] = errors.get(site, 0) + 1
             st.setdefault("last_error", {})[site] = f"{type(e).__name__}: {e}"[:200]
     plans = plan_mins(offers)
-    ok_sites = {o["site"] for o in offers}
+    ok_sites = {s for s, n in errors.items() if n == 0}
     prev = st.get("plans") and st
     alerts = deals(prev, plans)
 
@@ -340,7 +355,7 @@ if __name__ == "__main__":
     JST = dt.timezone(dt.timedelta(hours=9))
     now = dt.datetime.now(JST)
     for site, fn in FETCHERS.items():
-        got = fn()
+        got = wanted(fn())
         print(f"== {site}: {len(got)}件")
         for o in sorted(plan_mins(got).values(), key=lambda o: o["eff"])[:5]:
             print("  ", describe(o, link=False))
