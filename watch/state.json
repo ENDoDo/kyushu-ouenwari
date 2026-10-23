@@ -25,47 +25,6 @@
     "site": "ikyu",
     "total": 25920
    },
-   "jalan|2食付": {
-    "coupon": 4800,
-    "coupons": [
-     "10月【じゃらんのお得な10日間】3000円",
-     "10/20発行_じゃらんのお得な10日間厳選宿_1800円分クーポン"
-    ],
-    "eff": 28148,
-    "left": 2,
-    "meal": "2食付",
-    "plan": "【じゃらんのお得な10日間】部屋食BBQ／ワンちゃんと一緒にお泊まり！ドッグランを楽しもう",
-    "points": 4492,
-    "regular": 41600,
-    "room": "",
-    "site": "jalan",
-    "total": 37440
-   },
-   "jalan|朝食付": {
-    "coupon": 4500,
-    "coupons": [
-     "10月【じゃらんのお得な10日間】3000円",
-     "10/20発行_じゃらんのお得な10日間厳選宿_1500円分クーポン"
-    ],
-    "eff": 23660,
-    "left": 2,
-    "meal": "朝食付",
-    "plan": "【ワンちゃんと一緒にお泊まり！】◆朝食付◆天然温泉やアクティビティを満喫！気ままにゆっくり旅",
-    "points": 3840,
-    "room": "",
-    "site": "jalan",
-    "total": 32000
-   },
-   "official|2食付": {
-    "coupon": 0,
-    "eff": 37440,
-    "meal": "2食付",
-    "plan": "［九州ふっこう応援割対象プラン］予約してステイナビでクーポン取得すると割引に！ワンちゃんとお泊まり！お部屋でBBQ＆ドッグランを楽しもう！",
-    "points": 0,
-    "room": "",
-    "site": "official",
-    "total": 37440
-   },
    "rakuten|2食付": {
     "coupon": 0,
     "eff": 37100,
@@ -113,11 +72,11 @@
     "total": 25920
    }
   },
-  "checked_at": "2026-10-23T10:06:39+09:00",
+  "checked_at": "2026-10-23T10:38:01+09:00",
   "counts": {
    "ikyu": 3,
-   "jalan": 4,
-   "official": 1,
+   "jalan": 0,
+   "official": 0,
    "rakuten": 4,
    "yahoo": 3
   },
@@ -126,16 +85,12 @@
    "10/20発行_じゃらんのお得な10日間厳選宿_1800円分クーポン",
    "10月【じゃらんのお得な10日間】3000円"
   ],
-  "coupons_now": [
-   "10/20発行_じゃらんのお得な10日間厳選宿_1500円分クーポン",
-   "10/20発行_じゃらんのお得な10日間厳選宿_1800円分クーポン",
-   "10月【じゃらんのお得な10日間】3000円"
-  ],
+  "coupons_now": [],
   "errors": {
    "ikyu": 0,
    "jalan": 0,
    "official": 0,
-   "rakuten": 15,
+   "rakuten": 16,
    "yahoo": 0
   },
   "last_error": {
@@ -154,11 +109,6 @@
    "ikyu|【ワンちゃんと一緒にお泊まり！】＜朝食付＞天然温泉やアクティビティを満喫！気ままにゆっくり旅": 25920,
    "ikyu|【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ": 39042,
    "ikyu|【部屋食BBQ】ワンちゃんと一緒にお泊まり！お部屋食BBQ＆ドッグランを楽しもう": 33696,
-   "jalan|【じゃらんのお得な10日間】部屋食BBQ／ワンちゃんと一緒にお泊まり！ドッグランを楽しもう": 28148,
-   "jalan|【ワンちゃんと一緒にお泊まり！】◆朝食付◆天然温泉やアクティビティを満喫！気ままにゆっくり旅": 23660,
-   "jalan|【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ": 37616,
-   "jalan|【部屋食BBQ】ワンちゃんとお泊まり！お部屋でBBQ＆ドッグランを楽しもう！": 31808,
-   "official|［九州ふっこう応援割対象プラン］予約してステイナビでクーポン取得すると割引に！ワンちゃんとお泊まり！お部屋でBBQ＆ドッグランを楽しもう！": 37440,
    "rakuten|【ワンちゃんと一緒】◆朝食付き◆天然温泉やアクティビティを満喫！気ままにゆったり癒し旅♪": 31710,
    "rakuten|【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ": 47762,
    "rakuten|【楽天月末セール】部屋食BBQ／ワンちゃんと一緒にお泊まり！ドッグランを楽しもう": 37100,
@@ -13670,14 +13620,14 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 47,
+   "errors": 48,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 9
    }
   },
   "rakuten-kagoshima": {
-   "errors": 47,
+   "errors": 48,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": [
     "[鹿児島] 終了しました",
@@ -13694,35 +13644,35 @@
    ]
   },
   "rakuten-kumamoto": {
-   "errors": 47,
+   "errors": 48,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-miyazaki": {
-   "errors": 47,
+   "errors": 48,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 4
    }
   },
   "rakuten-nagasaki": {
-   "errors": 47,
+   "errors": 48,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-oita": {
-   "errors": 48,
+   "errors": 49,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-saga": {
-   "errors": 48,
+   "errors": 49,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
