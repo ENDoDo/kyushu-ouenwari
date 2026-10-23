@@ -72,7 +72,7 @@
     "total": 25920
    }
   },
-  "checked_at": "2026-10-23T11:08:48+09:00",
+  "checked_at": "2026-10-23T11:39:40+09:00",
   "counts": {
    "ikyu": 3,
    "jalan": 0,
@@ -90,7 +90,7 @@
    "ikyu": 0,
    "jalan": 0,
    "official": 0,
-   "rakuten": 17,
+   "rakuten": 0,
    "yahoo": 0
   },
   "last_error": {
@@ -13620,15 +13620,13 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 53,
-   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "errors": 0,
    "state": {
     "expired": 9
    }
   },
   "rakuten-kagoshima": {
-   "errors": 53,
-   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "errors": 0,
    "state": [
     "[鹿児島] 終了しました",
     "[鹿児島] 先着利用上限に達しました",
@@ -13644,36 +13642,31 @@
    ]
   },
   "rakuten-kumamoto": {
-   "errors": 53,
-   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "errors": 0,
    "state": {
     "expired": 5
    }
   },
   "rakuten-miyazaki": {
-   "errors": 53,
-   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "errors": 0,
    "state": {
     "expired": 4
    }
   },
   "rakuten-nagasaki": {
-   "errors": 53,
-   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "errors": 0,
    "state": {
     "expired": 5
    }
   },
   "rakuten-oita": {
-   "errors": 54,
-   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "errors": 0,
    "state": {
     "expired": 5
    }
   },
   "rakuten-saga": {
-   "errors": 54,
-   "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
+   "errors": 0,
    "state": {
     "expired": 5
    }
@@ -15130,7 +15123,7 @@
   "stay-oita": {
    "errors": 0,
    "state": {
-    "csv": "oita_stay_search_261022_1701.csv",
+    "csv": "oita_stay_search_261023_1043.csv",
     "facilities": {
      "A&Bee HOTEL": "掲載中",
      "AMANERESORTGAHAMA": "掲載中",
@@ -15279,7 +15272,7 @@
      "おやど八福亭": "掲載中",
      "おやど花の湯": "掲載中",
      "おやど開花亭": "完売",
-     "お宿 五輪花": "完売",
+     "お宿 五輪花": "掲載中",
      "お宿 有楽": "掲載中",
      "お宿 秀": "掲載中",
      "お宿木蓮": "掲載中",
