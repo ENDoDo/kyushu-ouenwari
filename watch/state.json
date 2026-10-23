@@ -13620,14 +13620,14 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 51,
+   "errors": 52,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 9
    }
   },
   "rakuten-kagoshima": {
-   "errors": 51,
+   "errors": 52,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": [
     "[鹿児島] 終了しました",
@@ -13644,35 +13644,35 @@
    ]
   },
   "rakuten-kumamoto": {
-   "errors": 51,
+   "errors": 52,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-miyazaki": {
-   "errors": 51,
+   "errors": 52,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 4
    }
   },
   "rakuten-nagasaki": {
-   "errors": 51,
+   "errors": 52,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-oita": {
-   "errors": 52,
+   "errors": 53,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-saga": {
-   "errors": 52,
+   "errors": 53,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
