@@ -13670,14 +13670,14 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 46,
+   "errors": 47,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 9
    }
   },
   "rakuten-kagoshima": {
-   "errors": 46,
+   "errors": 47,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": [
     "[鹿児島] 終了しました",
@@ -13694,35 +13694,35 @@
    ]
   },
   "rakuten-kumamoto": {
-   "errors": 46,
+   "errors": 47,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-miyazaki": {
-   "errors": 46,
+   "errors": 47,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 4
    }
   },
   "rakuten-nagasaki": {
-   "errors": 46,
+   "errors": 47,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-oita": {
-   "errors": 47,
+   "errors": 48,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
    }
   },
   "rakuten-saga": {
-   "errors": 47,
+   "errors": 48,
    "last_error": "HTTPError: HTTP Error 503: Service Unavailable",
    "state": {
     "expired": 5
@@ -14632,7 +14632,7 @@
   "stay-kagoshima": {
    "errors": 0,
    "state": {
-    "csv": "kagoshima_stay_search_261022_1150.csv",
+    "csv": "kagoshima_stay_search_261023_0944.csv",
     "facilities": {
      "14hikari coffee inn": "掲載中",
      "47ハウス": "掲載中",
@@ -14787,7 +14787,7 @@
      "オーベルジュかなざわ": "掲載中",
      "クインテッサホテル鹿児島天文館 Relax＆Sleep": "掲載中",
      "クロロビアンコ奄美": "掲載中",
-     "グッドイン隼人": "掲載中",
+     "グッドイン隼人": "完売",
      "グリンファームぱる舎": "掲載中",
      "グリーンホテルちらん福住": "掲載中",
      "グリーンホテル福住": "掲載中",
@@ -15126,7 +15126,7 @@
      "種子島 Hotel Sandalwood": "完売",
      "種子島あらきホテル": "掲載中",
      "種子島あらき別館": "掲載中",
-     "種子島いわさきホテル": "掲載中",
+     "種子島いわさきホテル": "完売",
      "種子島グランピングリゾート": "掲載中",
      "種子島民宿はぴすま": "掲載中",
      "種子島温泉 赤尾木の湯": "掲載中",
