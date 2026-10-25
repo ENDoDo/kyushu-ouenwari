@@ -37,7 +37,7 @@
     "total": 28800
    }
   },
-  "checked_at": "2026-10-26T07:22:46+09:00",
+  "checked_at": "2026-10-26T07:55:27+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 1,
@@ -50,19 +50,16 @@
    "10/20発行_じゃらんのお得な10日間厳選宿_1800円分クーポン",
    "10月【じゃらんのお得な10日間】3000円"
   ],
-  "coupons_now": [
-   "10/20発行_じゃらんのお得な10日間厳選宿_1800円分クーポン",
-   "10月【じゃらんのお得な10日間】3000円"
-  ],
+  "coupons_now": [],
   "errors": {
    "ikyu": 0,
-   "jalan": 0,
+   "jalan": 1,
    "official": 0,
    "rakuten": 0,
    "yahoo": 0
   },
   "last_error": {
-   "jalan": "HTTPError: HTTP Error 503: Service Temporarily Unavailable",
+   "jalan": "ValueError: プランが1件も取れない（ページの作りが変わったか満室）",
    "rakuten": "HTTPError: HTTP Error 503: Service Unavailable"
   },
   "lowest": {
@@ -13635,8 +13632,7 @@
    }
   },
   "rurubu": {
-   "errors": 1,
-   "last_error": "ValueError: 状況を表す行が1つも取れない（ページの作りが変わった可能性）",
+   "errors": 0,
    "state": [
     "[熊本ふっこう応援割の受付を開始しました] 県ごとに予約開始日・割引対象期間が設定されています。",
     "[【福岡県・佐賀県・長崎県・大分県・宮崎県】] 県ごとに、予約開始時期・期間が設定されます。 県別制度詳細 をご確認ください。",
