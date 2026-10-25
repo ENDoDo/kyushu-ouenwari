@@ -13381,7 +13381,7 @@
    ]
   },
   "jalan": {
-   "errors": 6,
+   "errors": 7,
    "last_error": "HTTPError: HTTP Error 503: Service Temporarily Unavailable",
    "state": [
     "[福岡県] 予算上限に達したため、受付を停止いたしました。再開する際にはこのページでご案内いたします。（2026年10月8日更新）",
