@@ -37,7 +37,7 @@
     "total": 28800
    }
   },
-  "checked_at": "2026-10-26T02:44:41+09:00",
+  "checked_at": "2026-10-26T03:15:33+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 1,
@@ -53,7 +53,7 @@
   "coupons_now": [],
   "errors": {
    "ikyu": 0,
-   "jalan": 2,
+   "jalan": 3,
    "official": 0,
    "rakuten": 0,
    "yahoo": 0
@@ -13381,7 +13381,7 @@
    ]
   },
   "jalan": {
-   "errors": 7,
+   "errors": 8,
    "last_error": "HTTPError: HTTP Error 503: Service Temporarily Unavailable",
    "state": [
     "[福岡県] 予算上限に達したため、受付を停止いたしました。再開する際にはこのページでご案内いたします。（2026年10月8日更新）",
