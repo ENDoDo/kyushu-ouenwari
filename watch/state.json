@@ -37,7 +37,7 @@
     "total": 28800
    }
   },
-  "checked_at": "2026-10-27T06:00:32+09:00",
+  "checked_at": "2026-10-27T06:31:21+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 1,
@@ -57,7 +57,7 @@
   "errors": {
    "ikyu": 0,
    "jalan": 0,
-   "official": 9,
+   "official": 10,
    "rakuten": 0,
    "yahoo": 0
   },
