@@ -37,7 +37,7 @@
     "total": 28800
    }
   },
-  "checked_at": "2026-10-28T16:32:48+09:00",
+  "checked_at": "2026-10-28T17:07:10+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 1,
@@ -13566,7 +13566,7 @@
    ]
   },
   "pref-miyazaki": {
-   "errors": 8,
+   "errors": 9,
    "last_error": "URLError: <urlopen error timed out>",
    "state": [
     "【予約開始時期】",
