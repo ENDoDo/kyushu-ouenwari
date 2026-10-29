@@ -547,12 +547,6 @@
    "url": "https://fgh-ship.com/",
    "why": ""
   },
-  "stay-fukuoka|Fukuoka Hana Hostel": {
-   "at": "2026-10-19",
-   "pet": "不明",
-   "url": "",
-   "why": "公式サイトなし"
-  },
   "stay-fukuoka|Fukuoka Single Room": {
    "at": "2026-10-19",
    "pet": "不明",
@@ -13623,7 +13617,7 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 10,
+   "errors": 11,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 9
@@ -13664,7 +13658,7 @@
    }
   },
   "rakuten-oita": {
-   "errors": 10,
+   "errors": 11,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 5
@@ -13704,7 +13698,7 @@
   "stay-fukuoka": {
    "errors": 0,
    "state": {
-    "csv": "fukuoka_stay_search_261019_1130.csv",
+    "csv": "fukuoka_stay_search_261029_1048.csv",
     "facilities": {
      "58 Beach House": "掲載中",
      "9HOTEL HAKATA": "掲載中",
@@ -13780,7 +13774,6 @@
      "Fukuoka Guesthouse CAMP": "掲載中",
      "Fukuoka Guesthouse HIVE": "掲載中",
      "Fukuoka Guesthouse SHIP": "掲載中",
-     "Fukuoka Hana Hostel": "掲載中",
      "Fukuoka Single Room": "掲載中",
      "Giraffe Nakasu 白": "掲載中",
      "Giraffe tenjin 常": "掲載中",
