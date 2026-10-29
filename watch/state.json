@@ -37,7 +37,7 @@
     "total": 28800
    }
   },
-  "checked_at": "2026-10-29T12:32:04+09:00",
+  "checked_at": "2026-10-29T13:02:51+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 1,
@@ -13617,7 +13617,7 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 17,
+   "errors": 18,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 9
@@ -13658,7 +13658,7 @@
    }
   },
   "rakuten-oita": {
-   "errors": 17,
+   "errors": 18,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 5
