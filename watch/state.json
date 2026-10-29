@@ -1,7 +1,7 @@
 {
  "hotel": {
   "best": {},
-  "checked_at": "2026-10-29T19:49:29+09:00",
+  "checked_at": "2026-10-29T20:23:54+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 0,
@@ -13509,7 +13509,7 @@
    ]
   },
   "pref-miyazaki": {
-   "errors": 8,
+   "errors": 9,
    "last_error": "URLError: <urlopen error timed out>",
    "state": [
     "【予約開始時期】",
@@ -13561,7 +13561,7 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 61,
+   "errors": 62,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 9
@@ -13602,7 +13602,7 @@
    }
   },
   "rakuten-oita": {
-   "errors": 61,
+   "errors": 62,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 5
