@@ -1,7 +1,7 @@
 {
  "hotel": {
   "best": {},
-  "checked_at": "2026-10-30T02:29:06+09:00",
+  "checked_at": "2026-10-30T02:59:50+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 0,
@@ -19,7 +19,7 @@
    "ikyu": 0,
    "jalan": 0,
    "official": 0,
-   "rakuten": 0,
+   "rakuten": 1,
    "yahoo": 0
   },
   "last_error": {
@@ -13560,7 +13560,7 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 98,
+   "errors": 99,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 9
@@ -13601,7 +13601,7 @@
    }
   },
   "rakuten-oita": {
-   "errors": 98,
+   "errors": 99,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 5
