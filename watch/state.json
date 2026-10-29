@@ -13509,7 +13509,7 @@
    ]
   },
   "pref-miyazaki": {
-   "errors": 19,
+   "errors": 20,
    "last_error": "URLError: <urlopen error timed out>",
    "state": [
     "【予約開始時期】",
@@ -13561,7 +13561,7 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 72,
+   "errors": 73,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 9
@@ -13602,7 +13602,7 @@
    }
   },
   "rakuten-oita": {
-   "errors": 72,
+   "errors": 73,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 5
