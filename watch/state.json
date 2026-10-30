@@ -13553,7 +13553,7 @@
    ]
   },
   "rakuten-fukuoka": {
-   "errors": 170,
+   "errors": 171,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 9
@@ -13588,14 +13588,14 @@
    }
   },
   "rakuten-nagasaki": {
-   "errors": 5,
+   "errors": 6,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 5
    }
   },
   "rakuten-oita": {
-   "errors": 170,
+   "errors": 171,
    "last_error": "ValueError: クーポン枠が見つからない（ページの作りが変わった可能性）",
    "state": {
     "expired": 5
