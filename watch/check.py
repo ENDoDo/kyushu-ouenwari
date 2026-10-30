@@ -32,6 +32,9 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/130 Safari/537.36")
 HEARTBEAT_HOUR = 8  # JST。この時刻以降の最初の実行で1日1回だけ現状まとめを出す
 ERROR_ALERT_AT = 3  # 連続でこの回数取れなかったら知らせる
+# 九州ふっこう応援割の空き・キャンセル枠と、ペット同伴可の宿の監視。2026-10-30 本人の指示で停止
+# （使っているのはアイランド長崎の料金監視だけ）。True に戻せば state.json の前回状態から再開する
+OUENWARI = False
 
 STATUS_RE = re.compile(
     r"販売中|発売中|受付中|配布中|再開|販売終了|受付終了|受付を終了|停止|完売|売切|売り切れ"
@@ -344,7 +347,7 @@ def main():
             return src, None, f"{type(e).__name__}: {e}"[:200]
 
     with ThreadPoolExecutor(max_workers=8) as ex:
-        results = list(ex.map(run, SOURCES))
+        results = list(ex.map(run, SOURCES)) if OUENWARI else []
 
     # 宿ごとのペット同伴可否（少しずつ調べて覚えておく。差分の印と毎朝のまとめに使う）
     pets = saved.setdefault("pet", {})
@@ -454,14 +457,15 @@ def main():
     saved.pop("last_heartbeat", None)  # 旧名（生存確認だけだった頃）
     if now.hour >= HEARTBEAT_HOUR and saved.get("last_summary") != today:
         saved["last_summary"] = today
-        parts.append(daily_summary(sources_state, stamp, now, pets))
+        if OUENWARI:
+            parts.append(daily_summary(sources_state, stamp, now, pets))
         hs = saved.get("hotel") or {}
         if hs.get("best") and now.date() < hotel.HOTEL["checkin"] and not hotel_first:
             parts.append(hotel.summary(hs, stamp))
 
     if "--ping" in sys.argv and not parts:
         parts.append(f"【九州ふっこう割ウォッチ】テスト投稿（{stamp}）: Slack への通知が届いています。"
-                     f"{len(SOURCES)}ソースを巡回中です。")
+                     + (f"{len(SOURCES)}ソースを巡回中です。" if OUENWARI else f"{hotel.HOTEL['name']}の料金だけを監視中です。"))
     if parts:
         # 検知（空き・変化・取得異常）とテスト投稿だけメンションを付けて、Slack の通知・バッジを鳴らす。
         # 開始・現状まとめは鳴らさない
