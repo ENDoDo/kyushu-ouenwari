@@ -1,7 +1,7 @@
 {
  "hotel": {
   "best": {},
-  "checked_at": "2026-11-03T01:57:33+09:00",
+  "checked_at": "2026-11-03T02:27:47+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 0,
@@ -20,7 +20,7 @@
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 13
+   "yahoo": 14
   },
   "last_error": {
    "jalan": "ValueError: プランが1件も取れない（ページの作りが変わったか満室）",
