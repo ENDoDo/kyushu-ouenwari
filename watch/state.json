@@ -1,7 +1,7 @@
 {
  "hotel": {
   "best": {},
-  "checked_at": "2026-11-03T07:30:48+09:00",
+  "checked_at": "2026-11-03T08:01:03+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 0,
@@ -20,7 +20,7 @@
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 24
+   "yahoo": 25
   },
   "last_error": {
    "jalan": "ValueError: プランが1件も取れない（ページの作りが変わったか満室）",
@@ -58,7 +58,7 @@
    "yahoo|【部屋食BBQ】ワンちゃんと一緒にお泊まり！お部屋食BBQ＆ドッグランを楽しもう"
   ]
  },
- "last_summary": "2026-11-02",
+ "last_summary": "2026-11-03",
  "pet": {
   "stay-fukuoka|58 Beach House": {
    "at": "2026-10-19",
