@@ -1,7 +1,7 @@
 {
  "hotel": {
   "best": {},
-  "checked_at": "2026-11-02T19:24:15+09:00",
+  "checked_at": "2026-11-02T19:54:27+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 0,
@@ -20,12 +20,13 @@
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 0
+   "yahoo": 1
   },
   "last_error": {
    "jalan": "ValueError: プランが1件も取れない（ページの作りが変わったか満室）",
    "official": "HTTPError: HTTP Error 503: Service Unavailable",
-   "rakuten": "HTTPError: HTTP Error 503: Service Unavailable"
+   "rakuten": "HTTPError: HTTP Error 503: Service Unavailable",
+   "yahoo": "RuntimeError: Mac 側の取得で失敗: HTTPError: HTTP Error 403: OK"
   },
   "lowest": {
    "2食付": 28148,
