@@ -1,7 +1,7 @@
 {
  "hotel": {
   "best": {},
-  "checked_at": "2026-11-02T09:50:17+09:00",
+  "checked_at": "2026-11-02T10:20:27+09:00",
   "counts": {
    "ikyu": 0,
    "jalan": 0,
@@ -17,7 +17,7 @@
   "coupons_now": [],
   "errors": {
    "ikyu": 0,
-   "jalan": 1,
+   "jalan": 0,
    "official": 0,
    "rakuten": 0,
    "yahoo": 0
