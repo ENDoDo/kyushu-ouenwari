@@ -1,8 +1,39 @@
 {
- "fetched_at": "2026-11-03T07:30:06+09:00",
+ "fetched_at": "2026-11-03T12:30:06+09:00",
  "sites": {
   "yahoo": [],
-  "ikyu": []
+  "ikyu": [
+   {
+    "plan": "【ワンちゃんと一緒にお泊まり！】＜朝食付＞天然温泉やアクティビティを満喫！気ままにゆっくり旅",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "朝食付",
+    "total": 28224,
+    "coupon": 0,
+    "points": 0,
+    "regular": 32000,
+    "left": 1
+   },
+   {
+    "plan": "【部屋食BBQ】ワンちゃんと一緒にお泊まり！お部屋食BBQ＆ドッグランを楽しもう",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "2食付",
+    "total": 36692,
+    "coupon": 0,
+    "points": 0,
+    "regular": 41600,
+    "left": 1
+   },
+   {
+    "plan": "【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ",
+    "room": "BARK LODGE【1～2F】",
+    "meal": "2食付",
+    "total": 42513,
+    "coupon": 0,
+    "points": 0,
+    "regular": 48200,
+    "left": 1
+   }
+  ]
  },
  "errors": {
   "yahoo": "HTTPError: HTTP Error 403: OK",
