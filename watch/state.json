@@ -79,7 +79,7 @@
     "total": 32000
    }
   },
-  "checked_at": "2026-11-04T05:45:49+09:00",
+  "checked_at": "2026-11-04T06:16:36+09:00",
   "counts": {
    "ikyu": 3,
    "jalan": 4,
@@ -105,8 +105,8 @@
    "ikyu": 0,
    "jalan": 0,
    "official": 0,
-   "rakuten": 1,
-   "yahoo": 68
+   "rakuten": 0,
+   "yahoo": 69
   },
   "last_error": {
    "jalan": "ValueError: プランが1件も取れない（ページの作りが変わったか満室）",
