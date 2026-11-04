@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-11-04T07:30:06+09:00",
+ "fetched_at": "2026-11-04T12:30:07+09:00",
  "sites": {
   "yahoo": [],
   "ikyu": [
@@ -11,7 +11,7 @@
     "coupon": 0,
     "points": 0,
     "regular": 32000,
-    "left": 1
+    "left": 3
    },
    {
     "plan": "【部屋食BBQ】ワンちゃんと一緒にお泊まり！お部屋食BBQ＆ドッグランを楽しもう",
@@ -21,7 +21,7 @@
     "coupon": 0,
     "points": 0,
     "regular": 41600,
-    "left": 1
+    "left": 3
    },
    {
     "plan": "【ワンランクUP・部屋食BBQ】ワンちゃんと一緒にお泊まり！特選お部屋食BBQ",
@@ -31,7 +31,7 @@
     "coupon": 0,
     "points": 0,
     "regular": 48200,
-    "left": 1
+    "left": 3
    }
   ]
  },
