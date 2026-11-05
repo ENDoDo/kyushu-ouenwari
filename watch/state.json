@@ -79,7 +79,7 @@
     "total": 32000
    }
   },
-  "checked_at": "2026-11-06T01:09:21+09:00",
+  "checked_at": "2026-11-06T01:39:33+09:00",
   "counts": {
    "ikyu": 3,
    "jalan": 4,
@@ -96,13 +96,16 @@
    "11/2-11/3予約限定【じゃらんスペシャルウィーク】3400円",
    "11月【じゃらんスペシャルウィーク】3000円"
   ],
-  "coupons_now": [],
+  "coupons_now": [
+   "10/30発行_じゃらんスペシャルウィーク厳選宿_1500円分クーポン",
+   "11月【じゃらんスペシャルウィーク】3000円"
+  ],
   "errors": {
-   "ikyu": 26,
-   "jalan": 1,
+   "ikyu": 27,
+   "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 154
+   "yahoo": 155
   },
   "last_error": {
    "ikyu": "RuntimeError: Mac 側の取得で失敗: HTTPError: HTTP Error 403: OK",
