@@ -119,7 +119,7 @@ def search_url(site, h=HOTEL):
     ci, co = h["checkin"], h["checkin"] + dt.timedelta(days=h["nights"])
     if site == "official":
         q = urllib.parse.urlencode({"date": ci.isoformat(), "numberOfNights": h["nights"], "roomCount": 1,
-                                    "guests[8857][adult]": h["adults"], "searchTagMode": 1,
+                                    f"guests[{h.get('guest_key', 8857)}][adult]": h["adults"], "searchTagMode": 1,
                                     "priceMin": 0, "priceMax": 99999999})
         return f"https://reserve.489ban.net/client/{h['official']}/0/plan/search?{q}"
     if site == "jalan":
@@ -141,7 +141,8 @@ def search_url(site, h=HOTEL):
 
 
 def fetch_official(h=HOTEL):
-    """公式（489ban）。一覧は CSRF トークン付きの POST で別に取る。料金は「1名様料金」なので人数を掛ける。"""
+    """公式（489ban）。一覧は CSRF トークン付きの POST で別に取る。料金は「1名1泊あたり」なので人数と泊数を掛ける
+    （グランディスタイルで確認: 同じプランが1泊 20,790円・2泊 20,340円と出て、2泊の合計はじゃらんの1室2泊とほぼ一致）。"""
     op = opener()
     url = search_url("official", h)
     page = get(op, url)
@@ -158,7 +159,8 @@ def fetch_official(h=HOTEL):
         prices = [yen(p) for p in re.findall(r"<strong>\s*<span>([\d,]+)円</span>", sec)]
         if not prices:
             continue
-        out.append(offer("official", name, "", min(prices) * h["adults"], mt, left=left and int(left.group(1))))
+        out.append(offer("official", name, "", min(prices) * h["adults"] * h["nights"], mt,
+                         left=left and int(left.group(1))))
     return out
 
 

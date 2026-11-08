@@ -22,6 +22,7 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(0, os.path.dirname(__file__))
+import glamday  # noqa: E402
 import hotel  # noqa: E402
 import pet  # noqa: E402
 from sources import FOCUS_STAYS, SOURCES, UPCOMING  # noqa: E402
@@ -453,6 +454,16 @@ def main():
     if hotel_first and (saved.get("hotel") or {}).get("best"):
         parts.append("料金の監視を始めました。以後は良い割引が出たら即時に、毎朝8時台にまとめを投稿します。\n"
                      + hotel.summary(saved["hotel"], stamp))
+    # グランディスタイル沖縄読谷の2月平日・2泊の料金（毎朝1回、日付ごとの最安を一覧で出す）
+    glamday_loud = False
+    try:
+        g = glamday.run(saved, now)
+    except Exception as e:  # noqa: BLE001 — この監視の失敗で他を止めない
+        print(f"::warning::グランディスタイルの料金監視に失敗: {type(e).__name__}: {e}")
+        g = None
+    if g:
+        parts.append(g[0])
+        glamday_loud = g[1]
     today = now.strftime("%Y-%m-%d")
     saved.pop("last_heartbeat", None)  # 旧名（生存確認だけだった頃）
     if now.hour >= HEARTBEAT_HOUR and saved.get("last_summary") != today:
@@ -470,7 +481,8 @@ def main():
         # 検知（空き・変化・取得異常）とテスト投稿だけメンションを付けて、Slack の通知・バッジを鳴らす。
         # 開始・現状まとめは鳴らさない
         mention = os.environ.get("SLACK_MENTION", "").strip()
-        if mention and (dogs or dogs_done or goods or others or alerts or hotel_alerts or "--ping" in sys.argv):
+        if mention and (dogs or dogs_done or goods or others or alerts or hotel_alerts or glamday_loud
+                        or "--ping" in sys.argv):
             parts[0] = f"{mention} {parts[0]}"
         post_slack("\n\n".join(parts), dry_run)
     else:
