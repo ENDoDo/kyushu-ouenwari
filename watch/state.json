@@ -97,7 +97,7 @@
     "total": 32000
    }
   },
-  "checked_at": "2026-11-13T05:30:09+09:00",
+  "checked_at": "2026-11-13T06:00:23+09:00",
   "counts": {
    "ikyu": 3,
    "jalan": 5,
@@ -118,11 +118,11 @@
    "11月【じゃらんスペシャルウィーク】3000円"
   ],
   "errors": {
-   "ikyu": 368,
+   "ikyu": 369,
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 496
+   "yahoo": 497
   },
   "last_error": {
    "ikyu": "RuntimeError: Mac 側の取得で失敗: HTTPError: HTTP Error 403: OK",
