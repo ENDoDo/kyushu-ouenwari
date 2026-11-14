@@ -22,12 +22,14 @@ import sys
 import time
 import urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hotel  # noqa: E402 — チェックイン日は hotel.py の HOTEL["checkins"] を唯一の真実源にする
+
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36")
 
 HOTEL = {
     "id": "00002017",  # Yahoo!トラベル・一休で共通の施設ID
-    "checkin": "2026-12-06",
     "nights": 1,
     "adults": 2,
     "rooms": 1,
@@ -62,9 +64,9 @@ QUERY = """query LocalPrices($id: AccommodationIdScalar!, $plans: SearchPlansInp
 MEALS = {"000": "素泊まり", "001": "朝食付", "002": "夕食付", "003": "2食付"}
 
 
-def fetch(site):
+def fetch(site, checkin):
     host = SITES[site]
-    cond = {"checkInDate": HOTEL["checkin"], "discount": True, "lodgingCount": HOTEL["nights"],
+    cond = {"checkInDate": checkin, "discount": True, "lodgingCount": HOTEL["nights"],
             "peopleCount": HOTEL["adults"], "roomCount": HOTEL["rooms"], "searchType": "1",
             "sortItem": "1", "sortOrder": "1", "currency": "JPY", "sortAmountTarget": "USE"}
     body = json.dumps({"operationName": "LocalPrices", "query": QUERY,
@@ -105,15 +107,18 @@ def fetch(site):
 
 
 def collect():
-    out = {"fetched_at": dt.datetime.now(JST).isoformat(timespec="seconds"), "sites": {}, "errors": {}}
-    for site in SITES:
-        try:
-            out["sites"][site] = fetch(site)
-            out["errors"][site] = None
-        except Exception as e:  # 片方が落ちてももう片方は書く
-            out["sites"][site] = []
-            out["errors"][site] = f"{type(e).__name__}: {e}"[:300]
-        time.sleep(2)
+    now = dt.datetime.now(JST)
+    out = {"fetched_at": now.isoformat(timespec="seconds"), "dates": {}}
+    for d in hotel.active_dates(now):
+        day = out["dates"].setdefault(d.isoformat(), {"sites": {}, "errors": {}})
+        for site in SITES:
+            try:
+                day["sites"][site] = fetch(site, d.isoformat())
+                day["errors"][site] = None
+            except Exception as e:  # 片方・1日が落ちても残りは書く
+                day["sites"][site] = []
+                day["errors"][site] = f"{type(e).__name__}: {e}"[:300]
+            time.sleep(2)
     return out
 
 
@@ -148,10 +153,11 @@ def main():
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
         f.write("\n")
-    for site, offers in data["sites"].items():
-        print(f"[{site}] {len(offers)}件" + (f" エラー: {data['errors'][site]}" if data["errors"][site] else ""))
-        for o in offers:
-            print(f"  {o['meal']} {o['total']:,}円（通常{o['regular']:,}円・残{o['left']}） {o['plan']} / {o['room']}")
+    for day, d in data["dates"].items():
+        for site, offers in d["sites"].items():
+            print(f"[{day} {site}] {len(offers)}件" + (f" エラー: {d['errors'][site]}" if d["errors"][site] else ""))
+            for o in offers:
+                print(f"  {o['meal']} {o['total']:,}円（通常{o['regular']:,}円・残{o['left']}） {o['plan']} / {o['room']}")
     if "--push" in sys.argv:
         push()
 

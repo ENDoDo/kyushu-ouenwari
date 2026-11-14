@@ -440,7 +440,6 @@ def main():
     parts[:0] = dogs_done
 
     # 1軒の宿の料金（予約サイト横断）。良い割引は即時、全体は毎朝のまとめに添える
-    hotel_first = not (saved.get("hotel") or {}).get("best")
     try:
         hotel_alerts, _ = hotel.run(saved, now)
     except Exception as e:  # noqa: BLE001 — 料金監視の失敗で空き監視を止めない
@@ -448,11 +447,13 @@ def main():
         hotel_alerts = []
     if hotel_alerts:
         h = hotel.HOTEL
-        parts.append(f"💰 *【{h['name']}】{h['checkin'].month}/{h['checkin'].day}〜{h['nights']}泊の良い割引（{stamp}）*\n"
+        parts.append(f"💰 *【{h['name']}】{h['nights']}泊の良い割引（{stamp}）*\n"
                      + "\n".join(f"・{a}" for a in hotel_alerts))
-    if hotel_first and (saved.get("hotel") or {}).get("best"):
-        parts.append("料金の監視を始めました。以後は良い割引が出たら即時に、毎朝8時台にまとめを投稿します。\n"
-                     + hotel.summary(saved["hotel"], stamp))
+    # 監視を始めたとき・チェックイン日を足したときは、その場でまとめを1回出す（その日の朝のまとめは省く）
+    hotel_announced = hotel.announce(saved, now)
+    if hotel_announced:
+        parts.append("料金を監視するチェックイン日を更新しました。以後は良い割引が出たら即時に、毎朝8時台にまとめを投稿します。\n"
+                     + hotel.summary(saved["hotel"], stamp, now))
     today = now.strftime("%Y-%m-%d")
     saved.pop("last_heartbeat", None)  # 旧名（生存確認だけだった頃）
     if now.hour >= HEARTBEAT_HOUR and saved.get("last_summary") != today:
@@ -460,8 +461,8 @@ def main():
         if OUENWARI:
             parts.append(daily_summary(sources_state, stamp, now, pets))
         hs = saved.get("hotel") or {}
-        if hs.get("best") and now.date() < hotel.HOTEL["checkin"] and not hotel_first:
-            parts.append(hotel.summary(hs, stamp))
+        if hs.get("dates") and hotel.active_dates(now) and not hotel_announced:
+            parts.append(hotel.summary(hs, stamp, now))
 
     if "--ping" in sys.argv and not parts:
         parts.append(f"【九州ふっこう割ウォッチ】テスト投稿（{stamp}）: Slack への通知が届いています。"

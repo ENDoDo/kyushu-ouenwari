@@ -1,4 +1,4 @@
-"""1軒の宿の料金を予約サイト横断で見張る（いまはアイランド長崎・12/6〜1泊）。
+"""1軒の宿の料金を予約サイト横断で見張る（いまはアイランド長崎・12月の金曜泊と月曜泊＋12/6、各1泊）。
 
 各サイトの「指定日・指定人数」の検索結果からプランごとの合計料金を取り出し、
 クーポン・ポイントを差し引いた「実質」の最安を食事タイプ別に比べる。
@@ -24,7 +24,9 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 
 HOTEL = {
     "name": "アイランド長崎（i+Land nagasaki）",
-    "checkin": dt.date(2026, 12, 6),
+    # 見張るチェックイン日（各日 nights 泊）。持ち主の休みが金土・月火なので、休みの前夜に泊まる金曜と月曜。
+    # 12/6（日）は最初に頼まれた日なので残す。過ぎた日は自動で外れる。local_fetch.py もここを読む
+    "checkins": [dt.date(2026, 12, d) for d in (4, 6, 7, 11, 14, 18, 21, 25, 28)],
     "nights": 1,
     "adults": 2,
     # 犬（ポメラニアン1匹）連れなので、ペット同伴のプランだけを見る（プラン名＋部屋名で照合）。
@@ -36,7 +38,7 @@ HOTEL = {
     "jalan": "319516",             # www.jalan.net/yad<ここ>/
     "rakuten": "18933",            # hotel.travel.rakuten.co.jp/hinfo/<ここ>/
 }
-INTERVAL_MIN = 30  # 料金の取得間隔（check.py は10分ごとに回るので、そのうち30分に1回だけ取る）
+INTERVAL_MIN = 60  # 料金の取得間隔（check.py は10分ごとに回るので、そのうち60分に1回だけ取る。日数×サイト数ぶん叩くため）
 
 # 即時通知の条件
 DROP_YEN = 1000   # 食事タイプ別の「実質」最安が、これまでの最安からこの額以上下がったら
@@ -51,6 +53,19 @@ SITE_NAME = {"official": "公式HP", "jalan": "じゃらん", "rakuten": "楽天
 LOCAL_PATH = os.path.join(os.path.dirname(__file__), "local_prices.json")
 LOCAL_STALE_H = 26  # これより古ければ Mac 側が止まっているとみなして取得失敗に数える
 MEALS = ["素泊まり", "朝食付", "夕食付", "2食付"]
+WEEK = "月火水木金土日"
+LEGACY_DATE = "2026-12-06"  # 1日だけを見ていた頃の state・local_prices.json の日付
+
+
+def active_dates(now, h=HOTEL):
+    """まだ過ぎていないチェックイン日。"""
+    return [d for d in h["checkins"] if now.date() < d]
+
+
+def label(d):
+    if isinstance(d, str):
+        d = dt.date.fromisoformat(d)
+    return f"{d.month}/{d.day}({WEEK[d.weekday()]})"
 
 
 # ---------------------------------------------------------------- 共通
@@ -115,8 +130,10 @@ def offer(site, plan, room, total, meal_type, coupon=0, points=0, regular=None, 
 
 # ---------------------------------------------------------------- 各サイト
 
-def search_url(site, h=HOTEL):
-    ci, co = h["checkin"], h["checkin"] + dt.timedelta(days=h["nights"])
+def search_url(site, ci, h=HOTEL):
+    if isinstance(ci, str):
+        ci = dt.date.fromisoformat(ci)
+    co = ci + dt.timedelta(days=h["nights"])
     if site == "official":
         q = urllib.parse.urlencode({"date": ci.isoformat(), "numberOfNights": h["nights"], "roomCount": 1,
                                     "guests[8857][adult]": h["adults"], "searchTagMode": 1,
@@ -140,10 +157,10 @@ def search_url(site, h=HOTEL):
     raise KeyError(site)
 
 
-def fetch_official(h=HOTEL):
+def fetch_official(ci, h=HOTEL):
     """公式（489ban）。一覧は CSRF トークン付きの POST で別に取る。料金は「1名様料金」なので人数を掛ける。"""
     op = opener()
-    url = search_url("official", h)
+    url = search_url("official", ci, h)
     page = get(op, url)
     token = re.search(r'name="csrf-token" content="([^"]+)"', page).group(1)
     body = get(op, url.replace("/plan/search?", "/planlist/search?"), data=b"",
@@ -162,8 +179,8 @@ def fetch_official(h=HOTEL):
     return out
 
 
-def fetch_jalan(h=HOTEL):
-    page = get(opener(), search_url("jalan", h))
+def fetch_jalan(ci, h=HOTEL):
+    page = get(opener(), search_url("jalan", ci, h))
     out = []
     for cas in re.split(r'<li class="p-planCassette', page)[1:]:
         plan = text(re.search(r'p-searchResultItem__catchPhrase">(.*?)</p>', cas, re.S).group(1))
@@ -188,10 +205,10 @@ def fetch_jalan(h=HOTEL):
     return out
 
 
-def fetch_rakuten(h=HOTEL, max_pages=6):
+def fetch_rakuten(ci, h=HOTEL, max_pages=6):
     op, out = opener(), []
     for page_no in range(1, max_pages + 1):
-        page = get(op, search_url("rakuten", h) + f"&f_page_no={page_no}")
+        page = get(op, search_url("rakuten", ci, h) + f"&f_page_no={page_no}")
         blocks = re.split(r'<li id="\d+" class="planThumb"', page)[1:]
         for b in blocks:
             plan = text(re.search(r"<h4>(.*?)</h4>", b, re.S).group(1)).replace("NEW ", "", 1)
@@ -215,26 +232,33 @@ FETCHERS = {"official": fetch_official, "jalan": fetch_jalan, "rakuten": fetch_r
 
 
 def load_local(now, path=None):
-    """Mac が書いた local_prices.json を {site: offers のリスト または 例外} で返す。ファイルが無ければ空。"""
+    """Mac が書いた local_prices.json を {日付: {site: offers のリスト または 例外}} で返す。ファイルが無ければ空。
+
+    新しい形式は {"fetched_at", "dates": {"YYYY-MM-DD": {"sites", "errors"}}}。
+    日付を持たない旧形式（{"fetched_at", "sites", "errors"}）は 12/6 のぶんとして読む。
+    """
     try:
         with open(path or LOCAL_PATH, encoding="utf-8") as f:
             data = json.load(f)
     except FileNotFoundError:
         return {}
     age = now - dt.datetime.fromisoformat(data["fetched_at"])
+    days = data.get("dates") or {LEGACY_DATE: {"sites": data.get("sites"), "errors": data.get("errors")}}
     out = {}
-    for site, rows in (data.get("sites") or {}).items():
-        err = (data.get("errors") or {}).get(site)
-        if site not in SITE_NAME:
-            continue
-        if err:
-            out[site] = RuntimeError(f"Mac 側の取得で失敗: {err}")
-        elif age > dt.timedelta(hours=LOCAL_STALE_H):
-            out[site] = RuntimeError(f"Mac 側の取得が {age.total_seconds() / 3600:.0f} 時間止まっている")
-        else:
-            out[site] = [offer(site, r["plan"], r.get("room", ""), int(r["total"]), r.get("meal") or meal(r["plan"]),
-                               coupon=r.get("coupon"), points=r.get("points"), regular=r.get("regular"),
-                               left=r.get("left")) for r in rows]
+    for day, d in days.items():
+        res = out.setdefault(day, {})
+        for site, rows in (d.get("sites") or {}).items():
+            err = (d.get("errors") or {}).get(site)
+            if site not in SITE_NAME:
+                continue
+            if err:
+                res[site] = RuntimeError(f"Mac 側の取得で失敗: {err}")
+            elif age > dt.timedelta(hours=LOCAL_STALE_H):
+                res[site] = RuntimeError(f"Mac 側の取得が {age.total_seconds() / 3600:.0f} 時間止まっている")
+            else:
+                res[site] = [offer(site, r["plan"], r.get("room", ""), int(r["total"]),
+                                   r.get("meal") or meal(r["plan"]), coupon=r.get("coupon"), points=r.get("points"),
+                                   regular=r.get("regular"), left=r.get("left")) for r in rows]
     return out
 
 
@@ -278,7 +302,7 @@ def describe(o, link=True):
         s += f"（＋ポイント{o['points']:,}還元で実質{fmt_yen(o['eff'])}）"
     name = SITE_NAME[o["site"]]
     if link:
-        name = f"<{search_url(o['site'])}|{name}>"
+        name = f"<{search_url(o['site'], o.get('date') or LEGACY_DATE)}|{name}>"
     left = f"・残り{o['left']}" if o.get("left") else ""
     plan = o["plan"][:60] + (f"／{o['room'][:30]}" if o.get("room") else "")
     return f"{name} {s}［{o['meal']}{left}］{plan}"
@@ -315,111 +339,202 @@ def deals(prev, plans):
     return out
 
 
-def summary(state, stamp):
-    h = HOTEL
-    ci = h["checkin"]
-    party = h.get("party") or f"大人{h['adults']}名"
-    head = (f"*🏝️ 【{h['name']}】{ci.month}/{ci.day}〜{h['nights']}泊・{party}の料金まとめ（{stamp}）*\n"
-            "ペット同伴プランのみ（犬の料金は別途・現地払い）。料金は1室あたり税込。"
-            "実質＝支払い額からさらに還元ポイントを引いた目安（クーポンは先着で事前の獲得が要る）")
+def day_lines(ds):
+    """1日ぶんのまとめ。食事タイプごとにサイト横断の最安だけを出す。"""
     lines = []
+    now_min = meal_mins(ds.get("best", {}))
     for mt in MEALS:
-        rows = sorted((o for o in state["best"].values() if o["meal"] == mt), key=lambda o: o["eff"])
-        if rows:
-            lines.append(f"*{mt}*\n" + "\n".join(f"・{describe(o)}" for o in rows))
-    # 監視を始めてからの最安は、いまの最安より安かったときだけ載せる（同じなら上の一覧で分かる）
-    lows, at = state.get("lowest", {}), state.get("lowest_at", {})
-    now_min = meal_mins({k: v for k, v in state["best"].items()})
+        if mt in now_min:
+            lines.append(f"・{mt} {describe(now_min[mt])}")
+    # 監視を始めてからの最安は、いまの最安より安かったときだけ載せる（同じなら上の行で分かる）
+    lows, at = ds.get("lowest", {}), ds.get("lowest_at", {})
     past = [f"{mt} 実質{fmt_yen(lows[mt])}（{at.get(mt, '')}）" for mt in MEALS
             if mt in lows and mt in now_min and lows[mt] < now_min[mt]["eff"]]
     if past:
-        lines.append("監視を始めてからの最安（いまはこれより高い）: " + " / ".join(past))
-    cps = state.get("coupons_now") or []
+        lines.append("　これまでの最安（いまはこれより高い）: " + " / ".join(past))
+    return lines
+
+
+def summary(state, stamp, now=None):
+    h = HOTEL
+    now = now or dt.datetime.now(dt.timezone(dt.timedelta(hours=9)))
+    days = [d.isoformat() for d in active_dates(now)]
+    party = h.get("party") or f"大人{h['adults']}名"
+    head = (f"*🏝️ 【{h['name']}】{party}・{h['nights']}泊の料金まとめ（{stamp}）*\n"
+            "ペット同伴プランのみ（犬の料金は別途・現地払い）。料金は1室あたり税込。"
+            "実質＝支払い額からさらに還元ポイントを引いた目安（クーポンは先着で事前の獲得が要る）\n"
+            "監視中のチェックイン日: " + " ".join(label(d) for d in days))
+    ds_all = state.get("dates", {})
+    blocks, full = [], []
+    # 食事タイプ別に、いちばん安い日を先に出す
+    cheapest = []
+    for mt in MEALS:
+        cands = [(o["eff"], d, o) for d in days for o in meal_mins(ds_all.get(d, {}).get("best", {})).values()
+                 if o["meal"] == mt]
+        if cands:
+            eff, d, o = min(cands, key=lambda c: c[0])
+            cheapest.append(f"{mt} {label(d)} 実質{fmt_yen(eff)}（{SITE_NAME[o['site']]}）")
+    if cheapest:
+        blocks.append("*いちばん安い日*\n" + "\n".join(f"・{c}" for c in cheapest))
+    for d in days:
+        lines = day_lines(ds_all.get(d, {}))
+        if lines:
+            blocks.append(f"*{label(d)}〜{h['nights']}泊*\n" + "\n".join(lines))
+        elif ds_all.get(d, {}).get("checked"):
+            full.append(label(d))
+    tail = []
+    if full:
+        tail.append("犬連れプランの空室がどのサイトにも無い日: " + " ".join(full))
+    cps = sorted({c for d in days for c in ds_all.get(d, {}).get("coupons_now", [])})
     if cps:
-        lines.append("いま出ているクーポン: " + " / ".join(cps[:6]))
-    none = [SITE_NAME[s] for s, n in state.get("counts", {}).items() if n == 0 and not state["errors"].get(s)]
-    if none:
-        lines.append("対象プランの空室なし: " + ", ".join(none))
+        tail.append("いま出ているクーポン: " + " / ".join(cps[:6]))
     errs = [SITE_NAME[s] for s, n in state.get("errors", {}).items() if n]
     if errs:
-        lines.append("取得できなかったサイト: " + ", ".join(errs))
-    return head + "\n\n" + "\n\n".join(lines)
+        tail.append("取得できなかったサイト: " + ", ".join(errs))
+    if tail:
+        blocks.append("\n".join(tail))
+    return head + "\n\n" + "\n\n".join(blocks)
 
 
-def run(saved, now, force=False):
-    """saved["hotel"] を更新し、(即時通知の文面リスト, 取得できたか) を返す。"""
-    st = saved.setdefault("hotel", {})
-    if now.date() >= HOTEL["checkin"]:
-        return [], False
-    last = st.get("checked_at")
-    if not force and last and now - dt.datetime.fromisoformat(last) < dt.timedelta(minutes=INTERVAL_MIN - 1):
-        return [], False
+def migrate(st):
+    """1日だけを見ていた頃の state を dates[12/6] の下へ移す。"""
+    if "dates" in st:
+        return
+    keys = ["plans", "seen", "best", "lowest", "lowest_at", "coupons", "coupons_now", "counts"]
+    old = {k: st.pop(k) for k in keys if k in st}
+    st["dates"] = {}
+    if old.get("plans") is not None:
+        for o in old.get("best", {}).values():
+            o.setdefault("date", LEGACY_DATE)
+        old["checked"] = True
+        st["dates"][LEGACY_DATE] = old
+        st["announced"] = [LEGACY_DATE]
 
-    offers, errors = [], st.setdefault("errors", {})
-    for site, fn in FETCHERS.items():
-        try:
-            got = fn()
-            if not got:
-                raise ValueError("プランが1件も取れない（ページの作りが変わったか満室）")
-            mine = wanted(got)
-            offers += mine
-            st.setdefault("counts", {})[site] = len(mine)
-            errors[site] = 0
-        except Exception as e:  # noqa: BLE001 — 1サイトの失敗で全体を止めない
-            errors[site] = errors.get(site, 0) + 1
-            st.setdefault("last_error", {})[site] = f"{type(e).__name__}: {e}"[:200]
-    try:
-        local = load_local(now)
-    except Exception as e:  # noqa: BLE001 — 壊れたファイルで全体を止めない
-        local = {s: e for s in ("yahoo", "ikyu")}
-    for site, got in local.items():
-        if isinstance(got, Exception):
-            errors[site] = errors.get(site, 0) + 1
-            st.setdefault("last_error", {})[site] = f"{type(got).__name__}: {got}"[:200]
-            continue
-        mine = wanted(got)  # 空でもよい（犬連れプランの空室なし）
-        offers += mine
-        st.setdefault("counts", {})[site] = len(mine)
-        errors[site] = 0
+
+def update_day(ds, day, offers, ok_sites, now):
+    """1日ぶんの state を更新し、即時通知の文面を返す。ok_sites はこの日に取得できたサイト。"""
     plans = plan_mins(offers)
-    ok_sites = {s for s, n in errors.items() if n == 0}
-    prev = st.get("plans") and st
-    alerts = deals(prev, plans)
+    prev = ds.get("plans") and ds
+    alerts = [f"{label(day)} {a}" for a in deals(prev, plans)]
 
     # 取れなかったサイトの前回値は残す（一時的な失敗で「新しいプラン」と誤検知しないため）
-    kept = {k: v for k, v in st.get("plans", {}).items() if k.split("|", 1)[0] not in ok_sites}
-    st["plans"] = {**kept, **{k: o["eff"] for k, o in plans.items()}}
-    st["seen"] = sorted(set(st.get("seen", [])) | set(plans))
-    best = {k: v for k, v in st.get("best", {}).items() if v["site"] not in ok_sites}
+    kept = {k: v for k, v in ds.get("plans", {}).items() if k.split("|", 1)[0] not in ok_sites}
+    ds["plans"] = {**kept, **{k: o["eff"] for k, o in plans.items()}}
+    ds["seen"] = sorted(set(ds.get("seen", [])) | set(plans))
+    best = {k: v for k, v in ds.get("best", {}).items() if v["site"] not in ok_sites}
     for site in ok_sites:
         for mt, o in meal_mins({k: v for k, v in plans.items() if v["site"] == site}).items():
             best[f"{site}|{mt}"] = o
-    st["best"] = best
-    lows = st.setdefault("lowest", {})
-    lows_at = st.setdefault("lowest_at", {})
+    ds["best"] = best
+    lows = ds.setdefault("lowest", {})
+    lows_at = ds.setdefault("lowest_at", {})
     for mt, o in meal_mins(plans).items():
         if mt not in lows or o["eff"] < lows[mt]:
             lows[mt] = o["eff"]
             lows_at[mt] = f"{now.month}/{now.day} {SITE_NAME[o['site']]}"
     now_cp = sorted({c for o in plans.values() for c in o.get("coupons", [])})
-    st["coupons_now"] = now_cp
-    st["coupons"] = sorted(set(st.get("coupons", [])) | set(now_cp))
+    ds["coupons_now"] = now_cp
+    ds["coupons"] = sorted(set(ds.get("coupons", [])) | set(now_cp))
+    if ok_sites:
+        ds["checked"] = True
+    return alerts
+
+
+def run(saved, now, force=False, pause=1.0):
+    """saved["hotel"] を更新し、(即時通知の文面リスト, 取得できたか) を返す。"""
+    st = saved.setdefault("hotel", {})
+    migrate(st)
+    days = active_dates(now)
+    if not days:
+        return [], False
+    last = st.get("checked_at")
+    if not force and last and now - dt.datetime.fromisoformat(last) < dt.timedelta(minutes=INTERVAL_MIN - 1):
+        return [], False
+
+    # 日付 → サイト → offers（犬連れで絞る前）または例外
+    res = {d.isoformat(): {} for d in days}
+    for site, fn in FETCHERS.items():
+        for d in days:
+            try:
+                got = fn(d)
+                for o in got:
+                    o["date"] = d.isoformat()
+                res[d.isoformat()][site] = got
+            except Exception as e:  # noqa: BLE001 — 1サイト1日の失敗で全体を止めない
+                res[d.isoformat()][site] = e
+            time.sleep(pause)
+    try:
+        local = load_local(now)
+    except Exception as e:  # noqa: BLE001 — 壊れたファイルで全体を止めない
+        local = {d: {s: e for s in ("yahoo", "ikyu")} for d in res}
+    for day, sites in local.items():
+        if day in res:
+            for site, got in sites.items():
+                if not isinstance(got, Exception):
+                    for o in got:
+                        o["date"] = day
+                res[day][site] = got
+    # Mac 側のファイルにまだ無い日（日付を足した直後など）は、取得失敗ではなく「未取得」として扱う
+
+    # サイトごとの失敗回数（全部の日で例外、またはクラウド側で全部の日が0件なら失敗）
+    errors = st.setdefault("errors", {})
+    for site in SITE_NAME:
+        got = [r[site] for r in res.values() if site in r]
+        if not got:
+            continue
+        exc = [g for g in got if isinstance(g, Exception)]
+        if len(exc) == len(got):
+            e = exc[-1]
+        elif site in FETCHERS and not any(g for g in got if not isinstance(g, Exception)):
+            e = ValueError("どの日もプランが1件も取れない（ページの作りが変わったか全日満室）")
+        else:
+            errors[site] = 0
+            continue
+        errors[site] = errors.get(site, 0) + 1
+        st.setdefault("last_error", {})[site] = f"{type(e).__name__}: {e}"[:200]
+
+    alerts, any_ok = [], False
+    for day, sites in res.items():
+        ds = st["dates"].setdefault(day, {})
+        offers, ok_sites = [], set()
+        counts = ds.setdefault("counts", {})
+        for site, got in sites.items():
+            if isinstance(got, Exception):
+                continue
+            mine = wanted(got)
+            offers += mine
+            counts[site] = len(mine)
+            ok_sites.add(site)
+        any_ok = any_ok or bool(offers)
+        alerts += update_day(ds, day, offers, ok_sites, now)
+    # 過ぎた日・監視から外した日は捨てる
+    keep = set(res)
+    st["dates"] = {d: v for d, v in st["dates"].items() if d in keep}
     st["checked_at"] = now.isoformat(timespec="seconds")
 
-    if errors and any(n == 3 for n in errors.values()):
+    if any(n == 3 for n in errors.values()):
         alerts += [f"⚠️ {SITE_NAME[s]}の料金が3回続けて取れていません（{st['last_error'].get(s)}）"
                    for s, n in errors.items() if n == 3]
-    return alerts, bool(offers)
+    return alerts, any_ok
+
+
+def announce(saved, now):
+    """監視する日が変わったら（初回を含む）、まとめを1回出すべきか。出すなら記録して True。"""
+    st = saved.get("hotel") or {}
+    days = [d.isoformat() for d in active_dates(now)]
+    if not days or not any(st.get("dates", {}).get(d, {}).get("checked") for d in days):
+        return False
+    new = [d for d in days if d not in st.get("announced", [])]
+    st["announced"] = days
+    return bool(new)
 
 
 if __name__ == "__main__":
     JST = dt.timezone(dt.timedelta(hours=9))
     now = dt.datetime.now(JST)
-    for site, fn in FETCHERS.items():
-        got = wanted(fn())
-        print(f"== {site}: {len(got)}件")
-        for o in sorted(plan_mins(got).values(), key=lambda o: o["eff"])[:5]:
-            print("  ", describe(o, link=False))
     saved = {}
     alerts, _ = run(saved, now, force=True)
-    print(summary(saved["hotel"], now.strftime("%m/%d %H:%M")))
+    for day, ds in saved["hotel"]["dates"].items():
+        print(f"== {label(day)}: " + ", ".join(f"{s} {n}件" for s, n in ds.get("counts", {}).items()))
+    print(saved["hotel"].get("last_error"))
+    print(summary(saved["hotel"], now.strftime("%m/%d %H:%M"), now))
