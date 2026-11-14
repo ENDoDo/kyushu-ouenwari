@@ -32,6 +32,8 @@ HOTEL = {
     # 犬（ポメラニアン1匹）連れなので、ペット同伴のプランだけを見る（プラン名＋部屋名で照合）。
     # 施設のグランピング（GRAX）はペット不可で、犬と泊まれるのはドッグラン付きの BARK LODGE だけ
     "plan_filter": r"ワンちゃん|愛犬|ペット|BARK",
+    # 見る食事タイプ（本人の指定で2食付だけ。2026-11-14）
+    "meals": ["2食付"],
     "party": "大人2名・犬1匹",
     # 予約サイトごとの施設ID
     "official": "islandnagasaki",  # reserve.489ban.net/client/<ここ>/0/
@@ -54,7 +56,7 @@ LOCAL_PATH = os.path.join(os.path.dirname(__file__), "local_prices.json")
 LOCAL_STALE_H = 26  # これより古ければ Mac 側が止まっているとみなして取得失敗に数える
 MEALS = ["素泊まり", "朝食付", "夕食付", "2食付"]
 STALE_ERRORS = 3  # これ以上続けて取れていないサイトの前回値は、まとめに載せない（古い料金を今の料金に見せない）
-ANNOUNCE_REV = 2  # 上げると、次の取得のあとにまとめを1回出し直す
+ANNOUNCE_REV = 3  # 上げると、次の取得のあとにまとめを1回出し直す
 WEEK = "月火水木金土日"
 LEGACY_DATE = "2026-12-06"  # 1日だけを見ていた頃の state・local_prices.json の日付
 
@@ -265,8 +267,9 @@ def load_local(now, path=None):
 
 
 def wanted(offers, h=HOTEL):
-    pat = h.get("plan_filter")
-    return [o for o in offers if not pat or re.search(pat, f"{o['plan']} {o['room']}")]
+    pat, meals = h.get("plan_filter"), h.get("meals")
+    return [o for o in offers if (not pat or re.search(pat, f"{o['plan']} {o['room']}"))
+            and (not meals or o["meal"] in meals)]
 
 
 # ---------------------------------------------------------------- 比べる
@@ -342,7 +345,9 @@ def deals(prev, plans):
 
 
 def fresh(best, errors):
-    return {k: o for k, o in best.items() if errors.get(o["site"], 0) < STALE_ERRORS}
+    meals = HOTEL.get("meals")
+    return {k: o for k, o in best.items()
+            if errors.get(o["site"], 0) < STALE_ERRORS and (not meals or o["meal"] in meals)}
 
 
 def day_lines(ds, errors):
@@ -367,22 +372,22 @@ def summary(state, stamp, now=None):
     days = [d.isoformat() for d in active_dates(now)]
     party = h.get("party") or f"大人{h['adults']}名"
     head = (f"*🏝️ 【{h['name']}】{party}・{h['nights']}泊の料金まとめ（{stamp}）*\n"
-            "ペット同伴プランのみ（犬の料金は別途・現地払い）。料金は1室あたり税込。"
+            "ペット同伴の" + "・".join(h.get("meals") or ["全食事タイプ"]) + "プランのみ（犬の料金は別途・現地払い）。料金は1室あたり税込。"
             "実質＝支払い額からさらに還元ポイントを引いた目安（クーポンは先着で事前の獲得が要る）\n"
             "監視中のチェックイン日: " + " ".join(label(d) for d in days))
     ds_all = state.get("dates", {})
     errors = state.get("errors", {})
     blocks, full = [], []
-    # 食事タイプ別に、いちばん安い日を先に出す
+    # いま全日・全サイトでいちばん安いのはどれかを先頭に（食事タイプごと）
     cheapest = []
     for mt in MEALS:
         cands = [(o["eff"], d, o) for d in days for o in meal_mins(fresh(ds_all.get(d, {}).get("best", {}), errors)).values()
                  if o["meal"] == mt]
         if cands:
             eff, d, o = min(cands, key=lambda c: c[0])
-            cheapest.append(f"{mt} {label(d)} 実質{fmt_yen(eff)}（{SITE_NAME[o['site']]}）")
+            cheapest.append(f"*{label(d)}〜{h['nights']}泊* {describe(o)}")
     if cheapest:
-        blocks.append("*いちばん安い日*\n" + "\n".join(f"・{c}" for c in cheapest))
+        blocks.append("*👑 いまいちばん安いのは*\n" + "\n".join(f"・{c}" for c in cheapest))
     for d in days:
         lines = day_lines(ds_all.get(d, {}), errors)
         if lines:
