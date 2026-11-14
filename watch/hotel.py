@@ -46,13 +46,15 @@ DROP_PCT = 10     # 同じプランの「実質」が前回からこの%以上�
 SALE_RE = re.compile(r"セール|SALE|タイムセール|特価|割引|OFF|早割|応援割|ふっこう|復興|クーポン|限定価格")
 
 SITE_NAME = {"official": "公式HP", "jalan": "じゃらん", "rakuten": "楽天トラベル",
-             "yahoo": "Yahoo!トラベル", "ikyu": "一休.com"}
+             "yahoo": "Yahoo!トラベル", "ikyu": "一休"}  # 「一休.com」と書くと Slack がドメインとして自動リンクする
 
 # Yahoo!トラベル・一休はクラウドの IP を丸ごと拒否する（ヘッドレス Chrome でも 403）。
 # 持ち主の Mac（家庭回線）が launchd で1日3回取得して watch/local_prices.json にコミットするので、それを読む
 LOCAL_PATH = os.path.join(os.path.dirname(__file__), "local_prices.json")
 LOCAL_STALE_H = 26  # これより古ければ Mac 側が止まっているとみなして取得失敗に数える
 MEALS = ["素泊まり", "朝食付", "夕食付", "2食付"]
+STALE_ERRORS = 3  # これ以上続けて取れていないサイトの前回値は、まとめに載せない（古い料金を今の料金に見せない）
+ANNOUNCE_REV = 2  # 上げると、次の取得のあとにまとめを1回出し直す
 WEEK = "月火水木金土日"
 LEGACY_DATE = "2026-12-06"  # 1日だけを見ていた頃の state・local_prices.json の日付
 
@@ -339,10 +341,14 @@ def deals(prev, plans):
     return out
 
 
-def day_lines(ds):
+def fresh(best, errors):
+    return {k: o for k, o in best.items() if errors.get(o["site"], 0) < STALE_ERRORS}
+
+
+def day_lines(ds, errors):
     """1日ぶんのまとめ。食事タイプごとにサイト横断の最安だけを出す。"""
     lines = []
-    now_min = meal_mins(ds.get("best", {}))
+    now_min = meal_mins(fresh(ds.get("best", {}), errors))
     for mt in MEALS:
         if mt in now_min:
             lines.append(f"・{mt} {describe(now_min[mt])}")
@@ -365,11 +371,12 @@ def summary(state, stamp, now=None):
             "実質＝支払い額からさらに還元ポイントを引いた目安（クーポンは先着で事前の獲得が要る）\n"
             "監視中のチェックイン日: " + " ".join(label(d) for d in days))
     ds_all = state.get("dates", {})
+    errors = state.get("errors", {})
     blocks, full = [], []
     # 食事タイプ別に、いちばん安い日を先に出す
     cheapest = []
     for mt in MEALS:
-        cands = [(o["eff"], d, o) for d in days for o in meal_mins(ds_all.get(d, {}).get("best", {})).values()
+        cands = [(o["eff"], d, o) for d in days for o in meal_mins(fresh(ds_all.get(d, {}).get("best", {}), errors)).values()
                  if o["meal"] == mt]
         if cands:
             eff, d, o = min(cands, key=lambda c: c[0])
@@ -377,7 +384,7 @@ def summary(state, stamp, now=None):
     if cheapest:
         blocks.append("*いちばん安い日*\n" + "\n".join(f"・{c}" for c in cheapest))
     for d in days:
-        lines = day_lines(ds_all.get(d, {}))
+        lines = day_lines(ds_all.get(d, {}), errors)
         if lines:
             blocks.append(f"*{label(d)}〜{h['nights']}泊*\n" + "\n".join(lines))
         elif ds_all.get(d, {}).get("checked"):
@@ -522,10 +529,12 @@ def announce(saved, now):
     """監視する日が変わったら（初回を含む）、まとめを1回出すべきか。出すなら記録して True。"""
     st = saved.get("hotel") or {}
     days = [d.isoformat() for d in active_dates(now)]
-    if not days or not any(st.get("dates", {}).get(d, {}).get("checked") for d in days):
+    # 全部の日を1回は取り終えてから（state を移しただけの時点で古い1日ぶんを出さない）
+    if not days or not all(st.get("dates", {}).get(d, {}).get("checked") for d in days):
         return False
-    new = [d for d in days if d not in st.get("announced", [])]
+    new = [d for d in days if d not in st.get("announced", [])] or st.get("announce_rev") != ANNOUNCE_REV
     st["announced"] = days
+    st["announce_rev"] = ANNOUNCE_REV
     return bool(new)
 
 
