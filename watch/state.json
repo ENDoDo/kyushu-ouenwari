@@ -54,7 +54,7 @@
    "2027-03-27",
    "2027-03-28"
   ],
-  "checked_at": "2026-11-16T05:30:58+09:00",
+  "checked_at": "2026-11-16T07:35:56+09:00",
   "dates": {
    "2026-12-04": {
     "best": {
@@ -3972,11 +3972,11 @@
    }
   },
   "errors": {
-   "ikyu": 472,
+   "ikyu": 473,
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 600
+   "yahoo": 601
   },
   "last_error": {
    "ikyu": "RuntimeError: Mac 側の取得で失敗: HTTPError: HTTP Error 403: OK",
