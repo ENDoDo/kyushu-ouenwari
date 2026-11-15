@@ -15,7 +15,7 @@
    "2026-12-26",
    "2026-12-27"
   ],
-  "checked_at": "2026-11-15T17:01:55+09:00",
+  "checked_at": "2026-11-15T18:04:06+09:00",
   "dates": {
    "2026-12-04": {
     "best": {
@@ -682,7 +682,7 @@
       "coupon": 0,
       "date": "2026-12-25",
       "eff": 41632,
-      "left": 1,
+      "left": 2,
       "meal": "2食付",
       "plan": "【じゃらんスペシャルウィーク】部屋食BBQ／ワンちゃんと一緒にお泊まり！ドッグランを楽しもう",
       "points": 848,
@@ -695,7 +695,7 @@
       "coupon": 0,
       "date": "2026-12-25",
       "eff": 46771,
-      "left": 1,
+      "left": 2,
       "meal": "2食付",
       "plan": "【部屋食BBQ】ワンちゃんとお泊まり！お部屋でBBQ＆ドッグランを楽しもう！",
       "points": 429,
@@ -771,11 +771,11 @@
    }
   },
   "errors": {
-   "ikyu": 464,
+   "ikyu": 465,
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 592
+   "yahoo": 593
   },
   "last_error": {
    "ikyu": "RuntimeError: Mac 側の取得で失敗: HTTPError: HTTP Error 403: OK",
