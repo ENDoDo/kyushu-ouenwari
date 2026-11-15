@@ -1,7 +1,17 @@
 {
- "fetched_at": "2026-11-15T07:30:06+09:00",
+ "fetched_at": "2026-11-15T12:30:08+09:00",
  "dates": {
   "2026-12-04": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "HTTPError: HTTP Error 403: OK",
+    "ikyu": "HTTPError: HTTP Error 403: OK"
+   }
+  },
+  "2026-12-05": {
    "sites": {
     "yahoo": [],
     "ikyu": []
@@ -21,16 +31,6 @@
     "ikyu": "HTTPError: HTTP Error 403: OK"
    }
   },
-  "2026-12-07": {
-   "sites": {
-    "yahoo": [],
-    "ikyu": []
-   },
-   "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
-   }
-  },
   "2026-12-11": {
    "sites": {
     "yahoo": [],
@@ -41,7 +41,17 @@
     "ikyu": "HTTPError: HTTP Error 403: OK"
    }
   },
-  "2026-12-14": {
+  "2026-12-12": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "HTTPError: HTTP Error 403: OK",
+    "ikyu": "HTTPError: HTTP Error 403: OK"
+   }
+  },
+  "2026-12-13": {
    "sites": {
     "yahoo": [],
     "ikyu": []
@@ -61,7 +71,17 @@
     "ikyu": "HTTPError: HTTP Error 403: OK"
    }
   },
-  "2026-12-21": {
+  "2026-12-19": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "HTTPError: HTTP Error 403: OK",
+    "ikyu": "HTTPError: HTTP Error 403: OK"
+   }
+  },
+  "2026-12-20": {
    "sites": {
     "yahoo": [],
     "ikyu": []
@@ -81,7 +101,17 @@
     "ikyu": "HTTPError: HTTP Error 403: OK"
    }
   },
-  "2026-12-28": {
+  "2026-12-26": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "HTTPError: HTTP Error 403: OK",
+    "ikyu": "HTTPError: HTTP Error 403: OK"
+   }
+  },
+  "2026-12-27": {
    "sites": {
     "yahoo": [],
     "ikyu": []
