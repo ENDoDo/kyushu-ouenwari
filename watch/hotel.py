@@ -24,9 +24,11 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 
 HOTEL = {
     "name": "アイランド長崎（i+Land nagasaki）",
-    # 見張るチェックイン日（各日 nights 泊）。本人の指定で12月の金・土・日のいずれかに泊まる1泊（2026-11-14）。
+    # 見張るチェックイン日（各日 nights 泊）。本人の指定で金・土・日のいずれかに泊まる1泊、
+    # 2026年12月〜2027年2月（12月は 2026-11-14、1月・2月は 2026-11-15 に追加）。
     # 過ぎた日は自動で外れる。local_fetch.py もここを読む
-    "checkins": [dt.date(2026, 12, d) for d in (4, 5, 6, 11, 12, 13, 18, 19, 20, 25, 26, 27)],
+    "checkins": [dt.date(2026, 12, 1) + dt.timedelta(days=i) for i in range(90)
+                 if (dt.date(2026, 12, 1) + dt.timedelta(days=i)).weekday() in (4, 5, 6)],
     "nights": 1,
     "adults": 2,
     # 犬（ポメラニアン1匹）連れなので、ペット同伴のプランだけを見る（プラン名＋部屋名で照合）。
@@ -40,7 +42,7 @@ HOTEL = {
     "jalan": "319516",             # www.jalan.net/yad<ここ>/
     "rakuten": "18933",            # hotel.travel.rakuten.co.jp/hinfo/<ここ>/
 }
-INTERVAL_MIN = 60  # 料金の取得間隔（check.py は10分ごとに回るので、そのうち60分に1回だけ取る。日数×サイト数ぶん叩くため）
+INTERVAL_MIN = 120  # 料金の取得間隔（check.py は10分ごとに回るので、そのうち2時間に1回だけ取る。約40日×サイト数ぶん叩くため）
 
 # 即時通知の条件
 DROP_YEN = 1000   # 食事タイプ別の「実質」最安が、これまでの最安からこの額以上下がったら
@@ -56,7 +58,7 @@ LOCAL_PATH = os.path.join(os.path.dirname(__file__), "local_prices.json")
 LOCAL_STALE_H = 26  # これより古ければ Mac 側が止まっているとみなして取得失敗に数える
 MEALS = ["素泊まり", "朝食付", "夕食付", "2食付"]
 STALE_ERRORS = 3  # これ以上続けて取れていないサイトの前回値は、まとめに載せない（古い料金を今の料金に見せない）
-ANNOUNCE_REV = 3  # 上げると、次の取得のあとにまとめを1回出し直す
+ANNOUNCE_REV = 4  # 上げると、次の取得のあとにまとめを1回出し直す
 WEEK = "月火水木金土日"
 LEGACY_DATE = "2026-12-06"  # 1日だけを見ていた頃の state・local_prices.json の日付
 
@@ -296,7 +298,7 @@ def fmt_yen(n):
     return f"{n:,}円"
 
 
-def describe(o, link=True):
+def describe(o, link=True, short=False):
     """1プランを1行で。合計（通常料金）→ クーポン・ポイント → 実質。"""
     s = fmt_yen(o["total"])
     if o.get("regular"):
@@ -309,6 +311,9 @@ def describe(o, link=True):
     if link:
         name = f"<{search_url(o['site'], o.get('date') or LEGACY_DATE)}|{name}>"
     left = f"・残り{o['left']}" if o.get("left") else ""
+    if short:  # 日ごとの一覧用。プラン名は「スペシャルウィーク」などの目印だけ
+        tag = "・SW" if "スペシャルウィーク" in o["plan"] else ""
+        return f"{name} {s}{'［残り' + str(o['left']) + tag + '］' if o.get('left') else ('［' + tag[1:] + '］' if tag else '')}"
     plan = o["plan"][:60] + (f"／{o['room'][:30]}" if o.get("room") else "")
     return f"{name} {s}［{o['meal']}{left}］{plan}"
 
@@ -350,20 +355,16 @@ def fresh(best, errors):
             if errors.get(o["site"], 0) < STALE_ERRORS and (not meals or o["meal"] in meals)}
 
 
-def day_lines(ds, errors):
-    """1日ぶんのまとめ。食事タイプごとにサイト横断の最安だけを出す。"""
-    lines = []
+def day_line(d, ds, errors):
+    """1日ぶんを1行で（2食付など見る食事タイプの最安）。空室が無ければ None。"""
     now_min = meal_mins(fresh(ds.get("best", {}), errors))
-    for mt in MEALS:
-        if mt in now_min:
-            lines.append(f"・{mt} {describe(now_min[mt])}")
-    # 監視を始めてからの最安は、いまの最安より安かったときだけ載せる（同じなら上の行で分かる）
-    lows, at = ds.get("lowest", {}), ds.get("lowest_at", {})
-    past = [f"{mt} 実質{fmt_yen(lows[mt])}（{at.get(mt, '')}）" for mt in MEALS
-            if mt in lows and mt in now_min and lows[mt] < now_min[mt]["eff"]]
-    if past:
-        lines.append("　これまでの最安（いまはこれより高い）: " + " / ".join(past))
-    return lines
+    if not now_min:
+        return None
+    parts = [describe(o, short=True) for mt, o in sorted(now_min.items(), key=lambda x: MEALS.index(x[0]))]
+    lows = ds.get("lowest", {})
+    past = [f"これまでの最安 実質{fmt_yen(lows[mt])}" for mt, o in now_min.items()
+            if mt in lows and lows[mt] < o["eff"]]
+    return f"・{label(d)} " + " / ".join(parts) + (f"（{', '.join(past)}）" if past else "")
 
 
 def summary(state, stamp, now=None):
@@ -374,7 +375,7 @@ def summary(state, stamp, now=None):
     head = (f"*🏝️ 【{h['name']}】{party}・{h['nights']}泊の料金まとめ（{stamp}）*\n"
             "ペット同伴の" + "・".join(h.get("meals") or ["全食事タイプ"]) + "プランのみ（犬の料金は別途・現地払い）。料金は1室あたり税込。"
             "実質＝支払い額からさらに還元ポイントを引いた目安（クーポンは先着で事前の獲得が要る）\n"
-            "監視中のチェックイン日: " + " ".join(label(d) for d in days))
+            f"監視中: 金・土・日のチェックイン {label(days[0]) if days else '-'}〜{label(days[-1]) if days else '-'}（{len(days)}日）")
     ds_all = state.get("dates", {})
     errors = state.get("errors", {})
     blocks, full = [], []
@@ -388,12 +389,15 @@ def summary(state, stamp, now=None):
             cheapest.append(f"*{label(d)}〜{h['nights']}泊* {describe(o)}")
     if cheapest:
         blocks.append("*👑 いまいちばん安いのは*\n" + "\n".join(f"・{c}" for c in cheapest))
+    by_month = {}
     for d in days:
-        lines = day_lines(ds_all.get(d, {}), errors)
-        if lines:
-            blocks.append(f"*{label(d)}〜{h['nights']}泊*\n" + "\n".join(lines))
+        line = day_line(d, ds_all.get(d, {}), errors)
+        if line:
+            by_month.setdefault(d[:7], []).append(line)
         elif ds_all.get(d, {}).get("checked"):
             full.append(label(d))
+    for ym, lines in by_month.items():
+        blocks.append(f"*{int(ym[5:])}月の日ごとの最安（{h['nights']}泊）*\n" + "\n".join(lines))
     tail = []
     if full:
         tail.append("犬連れプランの空室がどのサイトにも無い日: " + " ".join(full))

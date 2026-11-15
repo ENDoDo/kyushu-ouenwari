@@ -20,6 +20,7 @@ import re
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -107,17 +108,29 @@ def fetch(site, checkin):
 
 
 def collect():
+    """日ごと・サイトごとに取る。サイトが 403 を返したら、そのサイトの残りの日は叩かない。
+
+    2026-11 に両サイトの CDN（Fastly）がこの Mac の IP を丸ごと拒否するようになった（robots.txt まで 403）。
+    拒否中に日数ぶん叩き続けると解除されにくくなるので、1回の実行で各サイト1リクエストまでに抑える。
+    """
     now = dt.datetime.now(JST)
     out = {"fetched_at": now.isoformat(timespec="seconds"), "dates": {}}
+    blocked = {}
     for d in hotel.active_dates(now):
         day = out["dates"].setdefault(d.isoformat(), {"sites": {}, "errors": {}})
         for site in SITES:
+            if site in blocked:
+                day["sites"][site] = []
+                day["errors"][site] = blocked[site]
+                continue
             try:
                 day["sites"][site] = fetch(site, d.isoformat())
                 day["errors"][site] = None
             except Exception as e:  # 片方・1日が落ちても残りは書く
                 day["sites"][site] = []
                 day["errors"][site] = f"{type(e).__name__}: {e}"[:300]
+                if isinstance(e, urllib.error.HTTPError) and e.code == 403:
+                    blocked[site] = "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
             time.sleep(2)
     return out
 
