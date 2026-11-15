@@ -9,6 +9,7 @@
   python watch/hotel.py   # 取得結果とまとめ・即時通知の文面を標準出力に出す（state は書かない）
 """
 
+import concurrent.futures
 import datetime as dt
 import html
 import http.cookiejar
@@ -25,9 +26,9 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 HOTEL = {
     "name": "アイランド長崎（i+Land nagasaki）",
     # 見張るチェックイン日（各日 nights 泊）。本人の指定で金・土・日のいずれかに泊まる1泊、
-    # 2026年12月〜2027年2月（12月は 2026-11-14、1月・2月は 2026-11-15 に追加）。
+    # 2026年12月〜2027年3月（12月は 2026-11-14、1〜3月は 2026-11-15 に追加）。
     # 過ぎた日は自動で外れる。local_fetch.py もここを読む
-    "checkins": [dt.date(2026, 12, 1) + dt.timedelta(days=i) for i in range(90)
+    "checkins": [dt.date(2026, 12, 1) + dt.timedelta(days=i) for i in range(121)  # 〜2027-03-31
                  if (dt.date(2026, 12, 1) + dt.timedelta(days=i)).weekday() in (4, 5, 6)],
     "nights": 1,
     "adults": 2,
@@ -42,7 +43,7 @@ HOTEL = {
     "jalan": "319516",             # www.jalan.net/yad<ここ>/
     "rakuten": "18933",            # hotel.travel.rakuten.co.jp/hinfo/<ここ>/
 }
-INTERVAL_MIN = 120  # 料金の取得間隔（check.py は10分ごとに回るので、そのうち2時間に1回だけ取る。約40日×サイト数ぶん叩くため）
+INTERVAL_MIN = 120  # 料金の取得間隔（check.py は10分ごとに回るので、そのうち2時間に1回だけ取る。約50日×サイト数ぶん叩くため。サイトごとに並行して回す）
 
 # 即時通知の条件
 DROP_YEN = 1000   # 食事タイプ別の「実質」最安が、これまでの最安からこの額以上下がったら
@@ -58,7 +59,7 @@ LOCAL_PATH = os.path.join(os.path.dirname(__file__), "local_prices.json")
 LOCAL_STALE_H = 26  # これより古ければ Mac 側が止まっているとみなして取得失敗に数える
 MEALS = ["素泊まり", "朝食付", "夕食付", "2食付"]
 STALE_ERRORS = 3  # これ以上続けて取れていないサイトの前回値は、まとめに載せない（古い料金を今の料金に見せない）
-ANNOUNCE_REV = 4  # 上げると、次の取得のあとにまとめを1回出し直す
+ANNOUNCE_REV = 5  # 上げると、次の取得のあとにまとめを1回出し直す
 WEEK = "月火水木金土日"
 LEGACY_DATE = "2026-12-06"  # 1日だけを見ていた頃の state・local_prices.json の日付
 
@@ -469,7 +470,8 @@ def run(saved, now, force=False, pause=1.0):
 
     # 日付 → サイト → offers（犬連れで絞る前）または例外
     res = {d.isoformat(): {} for d in days}
-    for site, fn in FETCHERS.items():
+    # サイトごとに別スレッドで回す（同じサイトへは1本ずつ順番に、pause 秒あけて叩く）
+    def crawl(site, fn):
         for d in days:
             try:
                 got = fn(d)
@@ -479,6 +481,10 @@ def run(saved, now, force=False, pause=1.0):
             except Exception as e:  # noqa: BLE001 — 1サイト1日の失敗で全体を止めない
                 res[d.isoformat()][site] = e
             time.sleep(pause)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(FETCHERS)) as ex:
+        for f in [ex.submit(crawl, site, fn) for site, fn in FETCHERS.items()]:
+            f.result()
     try:
         local = load_local(now)
     except Exception as e:  # noqa: BLE001 — 壊れたファイルで全体を止めない
