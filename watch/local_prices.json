@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-11-16T07:30:07+09:00",
+ "fetched_at": "2026-11-16T12:30:08+09:00",
  "dates": {
   "2026-12-04": {
    "sites": {
@@ -17,8 +17,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-06": {
@@ -27,8 +27,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-11": {
@@ -37,8 +37,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-12": {
@@ -47,8 +47,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-13": {
@@ -57,8 +57,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-18": {
@@ -67,8 +67,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-19": {
@@ -77,8 +77,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-20": {
@@ -87,8 +87,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-25": {
@@ -97,8 +97,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-26": {
@@ -107,8 +107,8 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   },
   "2026-12-27": {
@@ -117,8 +117,398 @@
     "ikyu": []
    },
    "errors": {
-    "yahoo": "HTTPError: HTTP Error 403: OK",
-    "ikyu": "HTTPError: HTTP Error 403: OK"
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-01": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-02": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-03": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-08": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-09": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-10": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-15": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-16": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-17": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-22": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-23": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-24": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-29": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-30": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-01-31": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-05": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-06": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-07": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-12": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-13": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-14": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-19": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-20": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-21": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-26": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-27": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-02-28": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-05": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-06": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-07": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-12": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-13": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-14": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-19": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-20": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-21": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-26": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-27": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
+   }
+  },
+  "2027-03-28": {
+   "sites": {
+    "yahoo": [],
+    "ikyu": []
+   },
+   "errors": {
+    "yahoo": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
+    "ikyu": "blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
    }
   }
  }
