@@ -54,7 +54,7 @@
    "2027-03-27",
    "2027-03-28"
   ],
-  "checked_at": "2026-11-21T05:56:59+09:00",
+  "checked_at": "2026-11-21T08:01:32+09:00",
   "dates": {
    "2026-12-04": {
     "best": {
@@ -4376,11 +4376,11 @@
    }
   },
   "errors": {
-   "ikyu": 530,
+   "ikyu": 531,
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 658
+   "yahoo": 659
   },
   "last_error": {
    "ikyu": "RuntimeError: Mac 側の取得で失敗: blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
@@ -4390,7 +4390,7 @@
    "yahoo": "RuntimeError: Mac 側の取得で失敗: blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）"
   }
  },
- "last_summary": "2026-11-20",
+ "last_summary": "2026-11-21",
  "pet": {
   "stay-fukuoka|58 Beach House": {
    "at": "2026-10-19",
