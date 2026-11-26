@@ -54,7 +54,7 @@
    "2027-03-27",
    "2027-03-28"
   ],
-  "checked_at": "2026-11-27T02:59:59+09:00",
+  "checked_at": "2026-11-27T05:04:55+09:00",
   "dates": {
    "2026-12-04": {
     "best": {
@@ -4447,11 +4447,11 @@
    }
   },
   "errors": {
-   "ikyu": 598,
+   "ikyu": 599,
    "jalan": 0,
    "official": 0,
    "rakuten": 0,
-   "yahoo": 726
+   "yahoo": 727
   },
   "last_error": {
    "ikyu": "RuntimeError: Mac 側の取得で失敗: blocked: HTTP 403（CDN がこの回線を拒否中。この実行では以降の日を取らない）",
